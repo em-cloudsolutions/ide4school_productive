@@ -1,0 +1,48 @@
+
+(plank:10384): Gtk-WARNING **: 10:51:39.000: Theme parsing error: gtk.css:1649:16: '-gtk-icon-size' is not a valid property name
+
+(plank:10384): Gtk-WARNING **: 10:51:39.000: Theme parsing error: gtk.css:1652:16: '-gtk-icon-size' is not a valid property name
+
+(plank:10384): Gtk-WARNING **: 10:51:39.013: Theme parsing error: gtk.css:1649:16: '-gtk-icon-size' is not a valid property name
+
+(plank:10384): Gtk-WARNING **: 10:51:39.013: Theme parsing error: gtk.css:1652:16: '-gtk-icon-size' is not a valid property name
+Qt WARNING: QCursor: Cannot create bitmap cursor; invalid bitmap(s)
+Qt WARNING: QCursor: Cannot create bitmap cursor; invalid bitmap(s)
+
+(evolution:19805): Gtk-WARNING **: 11:20:25.541: Theme parsing error: gtk.css:1649:16: '-gtk-icon-size' is not a valid property name
+
+(evolution:19805): Gtk-WARNING **: 11:20:25.541: Theme parsing error: gtk.css:1652:16: '-gtk-icon-size' is not a valid property name
+
+(evolution-alarm-notify:19816): Gtk-WARNING **: 11:20:25.778: Theme parsing error: gtk.css:1649:16: '-gtk-icon-size' is not a valid property name
+
+(evolution-alarm-notify:19816): Gtk-WARNING **: 11:20:25.778: Theme parsing error: gtk.css:1652:16: '-gtk-icon-size' is not a valid property name
+
+(evolution:19805): Gtk-WARNING **: 11:20:26.003: Theme parsing error: gtk.css:1649:16: '-gtk-icon-size' is not a valid property name
+
+(evolution:19805): Gtk-WARNING **: 11:20:26.003: Theme parsing error: gtk.css:1652:16: '-gtk-icon-size' is not a valid property name
+
+(WebKitWebProcess:19857): Gtk-WARNING **: 11:20:26.054: Theme parsing error: gtk.css:1649:16: '-gtk-icon-size' is not a valid property name
+
+(WebKitWebProcess:19857): Gtk-WARNING **: 11:20:26.054: Theme parsing error: gtk.css:1652:16: '-gtk-icon-size' is not a valid property name
+
+(WebKitWebProcess:19857): Gtk-WARNING **: 11:20:26.071: Theme parsing error: gtk.css:1649:16: '-gtk-icon-size' is not a valid property name
+
+(WebKitWebProcess:19857): Gtk-WARNING **: 11:20:26.071: Theme parsing error: gtk.css:1652:16: '-gtk-icon-size' is not a valid property name
+
+(WebKitWebProcess:20024): Gtk-WARNING **: 11:20:31.133: Theme parsing error: gtk.css:1649:16: '-gtk-icon-size' is not a valid property name
+
+(WebKitWebProcess:20024): Gtk-WARNING **: 11:20:31.134: Theme parsing error: gtk.css:1652:16: '-gtk-icon-size' is not a valid property name
+
+(WebKitWebProcess:20029): Gtk-WARNING **: 11:20:31.134: Theme parsing error: gtk.css:1649:16: '-gtk-icon-size' is not a valid property name
+
+(WebKitWebProcess:20029): Gtk-WARNING **: 11:20:31.134: Theme parsing error: gtk.css:1652:16: '-gtk-icon-size' is not a valid property name
+
+(WebKitWebProcess:20024): Gtk-WARNING **: 11:20:31.148: Theme parsing error: gtk.css:1649:16: '-gtk-icon-size' is not a valid property name
+
+(WebKitWebProcess:20024): Gtk-WARNING **: 11:20:31.148: Theme parsing error: gtk.css:1652:16: '-gtk-icon-size' is not a valid property name
+
+(WebKitWebProcess:20029): Gtk-WARNING **: 11:20:31.151: Theme parsing error: gtk.css:1649:16: '-gtk-icon-size' is not a valid property name
+
+(WebKitWebProcess:20029): Gtk-WARNING **: 11:20:31.151: Theme parsing error: gtk.css:1652:16: '-gtk-icon-size' is not a valid property name
+
+(evolution:19805): GLib-GIO-WARNING **: 16:06:20.992: Your application did not unregister from D-Bus before destruction. Consider using g_application_run().

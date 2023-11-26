@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Grid Garden - A game for learning CSS grid layout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="core/games/default/gridgarden/node_modules/animate.css/animate.min.css">
+    <link href='https://fonts.googleapis.com/css?family=PT+Sans|Autour+One|Source+Code+Pro' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="core/games/default/gridgarden/css/style.css">
+  </head>
+  <body>
+    <section id="sidebar">
+      <div class="header">
+        <div>
+          <h1 class="title">Grid Garden</h1>
+        </div>
+        <div id="level-counter">
+          <span class="arrow left">
+            <span class="triangle"></span>
+          </span>
+          <span id="level-indicator">
+            <span id="labelLevel" class="translate">Level</span>
+            <span class="current">1</span>
+            <span id="labelOf" class="translate">of</span>
+            <span class="total">1</span>
+            <span class="caret">▾</span>
+          </span>
+          <span class="arrow right">
+            <span class="triangle"></span>
+          </span>
+          <div id="levelsWrapper" class="tooltip">
+            <div id="levels"></div>
+            <div id="labelReset" class="translate">Reset</div>
+          </div>
+        </div>
+      </div>
+      <p id="instructions"></p>
+      <div id="editor">
+        <div id="css">
+          <div class="line-numbers">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14</div>
+          <pre id="before"></pre>
+          <textarea id="code" autofocus autocapitalize="none"></textarea>
+          <pre id="after"></pre>
+        </div>
+        <button id="next" class="translate">Next</button>
+      </div>
+      <div id="share">
+        <div class="games">
+          <a target="_blank" data-title="Flexbox Froggy" href="https://codepip.com/games/flexbox-froggy/">
+            <img src="core/games/default/gridgarden/images/games/flexbox-froggy.png">
+          </a>
+          <a target="_blank" data-title="Nth Cart" href="https://codepip.com/">
+            <img src="core/games/default/gridgarden/images/games/nth-cart.png">
+          </a>
+          <a target="_blank" data-title="Disarray" href="https://codepip.com/">
+            <img src="core/games/default/gridgarden/images/games/disarray.png">
+          </a>
+          <a target="_blank" data-title="Code Crunchers" href="https://codepip.com/">
+            <img src="core/games/default/gridgarden/images/games/code-crunchers.png">
+          </a>
+        </div>
+        
+      </div>
+      
+      <div id="custom-inline"></div>
+
+      <div class="credits">
+        <span id="labelFooter" class="translate">Grid Garden is created by</span>
+        <a href="https://codepip.com">Codepip</a> •
+        <span id="language">
+          <span id="languageActive" class="toggle translate">English</span>
+          <span class="tooltip">
+            <a href="#en">English</a>
+            <a href="#es">Español</a>
+            <a href="#fr">Français</a>
+            <a href="#de">Deutsch</a>
+            <a href="#nl">Nederlands</a>
+            <a href="#it">Italiano</a>
+            <a href="#pt-br">Português(BR)</a>
+            <a href="#pt-pt">Português(PT)</a>
+            <a href="#ca">Català</a>
+            <a href="#sv">Svenska</a>
+            <a href="#no">Norsk</a>
+            <a href="#fi">Suomi</a>
+            <a href="#pl">Polski</a>
+            <a href="#hu">Magyar</a>
+            <a href="#ro">Română</a>
+            <a href="#al">Shqip</a>
+            <a href="#bg">Български</a>
+            <a href="#et">Eesti</a>
+            <a href="#lv">Latviešu</a>
+            <a href="#ru">Русский</a>
+            <a href="#ua">Українська</a>
+            <a href="#el">Ελληνικά</a>
+            <a href="#tr">Türkçe</a>
+            <a href="#ar">العربية</a>
+            <a href="#fa">فارسی</a>
+            <a href="#zh-cn">简体中文</a>
+            <a href="#zh-tw">繁體中文</a>
+            <a href="#ja">日本語</a>
+            <a href="#ko">한국어</a>
+            <a href="#vi">Tiếng Việt</a>
+            <a href="#th">ภาษาไทย</a>
+            <a href="#id">Bahasa Indonesia</a>
+            <a href="#tl">Tagalog</a>
+          </span>
+        </span>
+      </div>
+      <div class="credits">
+      </div>
+    </section>
+    <section id="view">
+      <div id="board">
+        <div id="overlay">
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+        </div>
+        <div id="plants"></div>
+        <div id="garden"></div>
+        <div id="soil">
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+        </div>
+      </div>
+    </section>
+    <script src="core/games/default/gridgarden/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="core/games/default/gridgarden/js/levels.js"></script>
+    <script src="core/games/default/gridgarden/js/docs.js"></script>
+    <script src="core/games/default/gridgarden/js/messages.js"></script>
+    <script src="core/games/default/gridgarden/js/game.js"></script>
+    
+  </body>
+</html>

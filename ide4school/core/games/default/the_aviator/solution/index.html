@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Load the solution</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'monospace';
+            background-color: cornsilk
+        }
+
+        body>xml {
+            display: none;
+        }
+
+        .root {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            width: 100vw;
+            height: 70vh;
+            padding: 10vh 0 20vh 0;
+            font-size: 35px;
+        }
+
+        .root>div {
+            width: 524px;
+        }
+
+        a {
+            color: #24292e;
+            text-decoration: none;
+            outline: 0
+        }
+
+        .octicon {
+            display: inline-block;
+            vertical-align: text-top;
+            fill: currentColor
+        }
+
+        .widget {
+            display: inline-block;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size: 0;
+            white-space: nowrap;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            transform: scale(2);
+        }
+
+        .btn,
+        .social-count {
+            display: inline-block;
+            height: 14px;
+            padding: 2px 5px;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 14px;
+            vertical-align: bottom;
+            cursor: pointer;
+            border: 1px solid #c5c9cc;
+            border-radius: 0.25em
+        }
+
+        .btn {
+            background-color: #eff3f6;
+            background-image: -webkit-linear-gradient(top, #fafbfc, #eff3f6 90%);
+            background-image: -moz-linear-gradient(top, #fafbfc, #eff3f6 90%);
+            background-image: linear-gradient(180deg, #fafbfc, #eff3f6 90%);
+            background-position: -1px -1px;
+            background-repeat: repeat-x;
+            background-size: 110% 110%;
+            border-color: rgba(27, 31, 35, 0.2);
+            -ms-filter: "progid:DXImageTransform.Microsoft.Gradient(startColorstr='#FFFAFBFC', endColorstr='#FFEEF2F5')";
+            *filter: progid:DXImageTransform.Microsoft.Gradient(startColorstr='#FFFAFBFC', endColorstr='#FFEEF2F5')
+        }
+
+        .btn:active {
+            background-color: #e9ecef;
+            background-image: none;
+            border-color: #a5a9ac;
+            border-color: rgba(27, 31, 35, 0.35);
+            box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15)
+        }
+
+        .btn:focus,
+        .btn:hover {
+            background-color: #e6ebf1;
+            background-image: -webkit-linear-gradient(top, #f0f3f6, #e6ebf1 90%);
+            background-image: -moz-linear-gradient(top, #f0f3f6, #e6ebf1 90%);
+            background-image: linear-gradient(180deg, #f0f3f6, #e6ebf1 90%);
+            border-color: #a5a9ac;
+            border-color: rgba(27, 31, 35, 0.35);
+            -ms-filter: "progid:DXImageTransform.Microsoft.Gradient(startColorstr='#FFF0F3F6', endColorstr='#FFE5EAF0')";
+            *filter: progid:DXImageTransform.Microsoft.Gradient(startColorstr='#FFF0F3F6', endColorstr='#FFE5EAF0')
+        }
+
+        .social-count {
+            position: relative;
+            margin-left: 5px;
+            background-color: #fff
+        }
+
+        .social-count:focus,
+        .social-count:hover {
+            color: #0366d6
+        }
+
+        .social-count b,
+        .social-count i {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            display: block;
+            width: 0;
+            height: 0;
+            margin: -4px 0 0 -4px;
+            border: solid transparent;
+            border-width: 4px 4px 4px 0;
+            _line-height: 0;
+            _border-top-color: red !important;
+            _border-bottom-color: red !important;
+            _border-left-color: red !important;
+            _filter: chroma(color=red)
+        }
+
+        .social-count b {
+            border-right-color: #c5c9cc
+        }
+
+        .social-count i {
+            margin-left: -3px;
+            border-right-color: #fff
+        }
+
+        .lg .btn,
+        .lg .social-count {
+            height: 16px;
+            padding: 5px 10px;
+            font-size: 12px;
+            line-height: 16px
+        }
+
+        .lg .social-count {
+            margin-left: 6px
+        }
+
+        .lg .social-count b,
+        .lg .social-count i {
+            margin: -5px 0 0 -5px;
+            border-width: 5px 5px 5px 0
+        }
+
+        .lg .social-count i {
+            margin-left: -4px
+        }
+    </style>
+    <script src="core/games/default/the_aviator/tutorial/libs/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="core/games/default/the_aviator/tutorial/js/worlds/worlds.js"></script>
+    <script>
+        const name = Worlds[Worlds.length - 1].stages[0].name
+    </script>
+    <script>
+        let index = 0
+        let solution_xml = '<xml xmlns="https://developers.google.com/blockly/xml"><block type="start" id="STARTED" deletable="false" movable="false" x="20" y="20"><next><block type="move" id="N!}g|d%F{dSNt]1sbO8B"><field name="DIRECTION">0</field><next><block type="move" id="YHarR^?]q*/]{Zp=F8Mj"><field name="DIRECTION">0</field><next><block type="controls_if" id="FLW0jRLya]M%XFx6Kt_:"><mutation else="1"/><value name="IF0"><block type="over" id="?_zvlXX*hL*W*vM/i*Y`"><field name="colour">#80e9e7</field></block></value><statement name="DO0"><block type="take" id="cq1*f@z+d/K~qqJDKGuy"><next><block type="procedures_callnoreturn" id="O`,B3nO[7swi2w0K$_tw"><mutation name="Next_Step"/></block></next></block></statement><statement name="ELSE"><block type="procedures_callnoreturn" id="#L^.wG]6%-p!q/CSybBh"><mutation name="Memo_Forward"/></block></statement><next><block type="release" id="3+!^~)meH9@?Jnoe^GWK"/></next></block></next></block></next></block></next></block><block type="procedures_defnoreturn" id="$)4`sLa8S=y~)MTa+Pm9" x="242" y="18"><field name="NAME">Memo_Forward</field><comment pinned="true" h="73.75633239746094" w="248.45193481445312">Move forward until a blue block is reached, execute Next_Step, then move backward for each move of the first step.</comment><statement name="STACK"><block type="move" id="1er.aOO/Z:NYYTG%GS}c"><field name="DIRECTION">0</field><next><block type="controls_if" id="@Ob8@VZ8LoQvj?M9.;A]"><mutation else="1"/><value name="IF0"><block type="over" id="^!R2i};?Bei};FX3,dNw"><field name="colour">#80e9e7</field></block></value><statement name="DO0"><block type="take" id="C:6o[vL]U[Ffkc2LT1{i"><next><block type="procedures_callnoreturn" id="~(1@X8K`Rr]amwHf#VYX"><mutation name="Next_Step"/></block></next></block></statement><statement name="ELSE"><block type="procedures_callnoreturn" id="A5ay/4wjse)c099CCp%o"><mutation name="Memo_Forward"/></block></statement><next><block type="move" id="!th,%Y6$m]#J%u/V$dz*"><field name="DIRECTION">2</field></block></next></block></next></block></statement></block><block type="procedures_defnoreturn" id="hr#N@~V3Q]]P0.hfdAQN" x="529" y="10"><field name="NAME">Next_Step</field><comment pinned="true" h="109.13710021972656" w="495.07684326171875">(Assumption: each last blue block is succeded by an orange block)&#10;Decide the next step based on the next block:&#10; - If orange, move back to the first orange block and end the recursion.&#10; - If blue and the last one, Last_Memo_Backward&#10; - If blue and not the last, Memo_Backward</comment><statement name="STACK"><block type="move" id="8*khpdDC.2s[xeT6I5B)"><field name="DIRECTION">0</field><next><block type="controls_if" id="KVb3XJ02(^+Q]oo^5ZoG"><mutation elseif="1" else="1"/><value name="IF0"><block type="over" id="OhcxZtM+Xy)E[zfC2I%U"><field name="colour">#80e9e7</field></block></value><statement name="DO0"><block type="move" id="5FA$#57PsJW;N6BJ$nv5"><field name="DIRECTION">0</field><next><block type="controls_if" id="r(uksd-r|lVFymfbMBnW"><mutation else="1"/><value name="IF0"><block type="over" id="lUeu*9ur@B{4M];_PG=s"><field name="colour">#f7d9aa</field></block></value><statement name="DO0"><block type="move" id="v#=ArS`a-ht=_9F5;^%V"><field name="DIRECTION">2</field><next><block type="procedures_callnoreturn" id="cSOwlJ^p12#={FB}l=8("><mutation name="Last_Memo_Backward"/></block></next></block></statement><statement name="ELSE"><block type="move" id="DJ}3j[T04JOKELCtt+f:"><field name="DIRECTION">2</field><next><block type="take" id="(xj_JSZ/TDdKI8sepoC/"><next><block type="procedures_callnoreturn" id="CUWUDYXJ]j@shqz=OJYb"><mutation name="Memo_Backward"/></block></next></block></next></block></statement></block></next></block></statement><value name="IF1"><block type="over" id="#bo!p%5Q:0%,=6f0J3``"><field name="colour">#f7d9aa</field></block></value><statement name="DO1"><block type="move" id="QF*nJ4!0qea]B6eu*sqW"><field name="DIRECTION">2</field><next><block type="controls_whileUntil" id="zX~SG_Bl.]a,-jua$wLt"><field name="MODE">UNTIL</field><value name="BOOL"><block type="over" id="6=c~8vh+PqHRDq3k[}Aj"><field name="colour">#f7d9aa</field></block></value><statement name="DO"><block type="move" id="kZo_-A/TK|O.OnZdobUP"><field name="DIRECTION">2</field></block></statement><next><block type="procedures_callnoreturn" id=":.wr[@9NpVwglp`?50o~"><mutation name="Turn"/></block></next></block></next></block></statement><statement name="ELSE"><block type="procedures_callnoreturn" id="bJ$/o=|nu%KE;|);X-K!"><mutation name="Next_Step"/></block></statement></block></next></block></statement></block><block type="procedures_defnoreturn" id="]u#iyw6G_{(9Qz/]MnJp" x="240" y="256"><field name="NAME">Memo_Backward</field><comment pinned="true" h="93.5279541015625" w="256.77679443359375">Move backward until the first orange block is reached, re-start the computation with Memo_Forward, then move backward for each move of the first step.</comment><statement name="STACK"><block type="move" id="aW5GoY!0rSCbKCHWiBQ|"><field name="DIRECTION">2</field><next><block type="controls_if" id="6q$GXyeQsqrxR%9WM!)d"><mutation else="1"/><value name="IF0"><block type="over" id="8BhlNdQ@97PrfuRXNBvO"><field name="colour">#f7d9aa</field></block></value><statement name="DO0"><block type="procedures_callnoreturn" id="|@KMZ*?$,3a|b%VL9laX"><mutation name="Memo_Forward"/></block></statement><statement name="ELSE"><block type="procedures_callnoreturn" id="RkT$gAL7J2L!^WA!O+Uz"><mutation name="Memo_Backward"/></block></statement><next><block type="move" id="*K@45{rjfupH^@Cj}$E+"><field name="DIRECTION">2</field></block></next></block></next></block></statement></block><block type="procedures_defnoreturn" id="c}T96mJUY0JwnLwb8KF$" x="238" y="467"><field name="NAME">Last_Memo_Backward</field><comment pinned="true" h="76.878173828125" w="271.3453674316406">Like Memo_Backward, but instead of re-starting the computation execute Turn.</comment><statement name="STACK"><block type="move" id=";A$BFi0=*$C5rO:i}(.Z"><field name="DIRECTION">2</field><next><block type="controls_if" id="?qJhdz7DuCgG#RJ]~vcH"><mutation else="1"/><value name="IF0"><block type="over" id="8guPCFBaMWU!4=)t4+ua"><field name="colour">#f7d9aa</field></block></value><statement name="DO0"><block type="procedures_callnoreturn" id="I%|rn5AAIfy^PG-X~?fl"><mutation name="Turn"/></block></statement><statement name="ELSE"><block type="procedures_callnoreturn" id="E}44X@)Pp$5!T.6CAjS0"><mutation name="Last_Memo_Backward"/></block></statement><next><block type="move" id="KK=~z}H]w)Ga^mAdTRFO"><field name="DIRECTION">2</field></block></next></block></next></block></statement></block><block type="procedures_defnoreturn" id="M:O-cAER2!)bOhV1jM9[" x="529" y="528"><field name="NAME">Turn</field><comment pinned="true" h="93.52801513671875" w="214.1116943359375">Starting from the first orange block, go to the violet block, take it and go to the first position of the first line.</comment><statement name="STACK"><block type="move" id="K+FO`JWmh.2ejHP!5ZB#"><field name="DIRECTION">2</field><next><block type="turn" id="dd[/Vh~q0,C=^uKg5Tv+"><field name="DIRECTION">1</field><next><block type="move" id="3Vb)A}(#nGXzgEU=m{Fx"><field name="DIRECTION">2</field><next><block type="take" id="+6?65Hf~QJJ($AS+2DfR"><next><block type="move" id="]r(k9QQi@E#(oJ9b5eZ;"><field name="DIRECTION">2</field><next><block type="turn" id="F^*k.z-JPfYJxJ@T[;cC"><field name="DIRECTION">1</field></block></next></block></next></block></next></block></next></block></next></block></statement></block></xml>'
+
+        function load() {
+            index++
+            if (index == 1)
+                swal.fire({
+                    type: 'warning',
+                    title: 'Are you sure?'
+                })
+
+            if (index == 2)
+                swal.fire({
+                    type: 'info',
+                    title: 'Don\'t forget to star the project 😎'
+                })
+
+            if (index == 3) {
+                localStorage.setItem(name, solution_xml)
+                location.assign("https://paol-imi.github.io/the-aviator/")
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="root">
+        <div>⚠️⚠️⚠️ Clicking the button below you will load the solution of the final level of the
+            <span style="border: 1px solid black; background-color: azure; border-radius: 20px;">&nbsp Impossible ocean
+                🐳 &nbsp</span> world. I advise you to try again to solve it before loading the solution.
+        </div>
+        <span>
+            <div onclick="load()" class="widget"><a class="btn" href="#" target="_self"><svg version="1.1" width="14"
+                        height="14" viewBox="0 0 16 16" class="octicon octicon-cloud-download" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M9 12h2l-3 3-3-3h2V7h2v5zm3-8c0-.44-.91-3-4.5-3C5.08 1 3 2.92 3 5 1.02 5 0 6.52 0 8c0 1.53 1 3 3 3h3V9.7H3C1.38 9.7 1.3 8.28 1.3 8c0-.17.05-1.7 1.7-1.7h1.3V5c0-1.39 1.56-2.7 3.2-2.7 2.55 0 3.13 1.55 3.2 1.8v1.2H12c.81 0 2.7.22 2.7 2.2 0 2.09-2.25 2.2-2.7 2.2h-2V11h2c2.08 0 4-1.16 4-3.5C16 5.06 14.08 4 12 4z">
+                        </path>
+                    </svg> <span>Load the solution</span></a></div>
+        </span>
+        <div>Don't forget to star the project 😎</div>
+        <span>
+            <div class="widget" onclick="window.location='https://github.com/Paol-imi/the-aviator'"><a class="btn"
+                    href="#" target="_self"><svg version="1.1" width="12.25" height="14" viewBox="0 0 14 16"
+                        class="octicon octicon-star" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74L14 6z">
+                        </path>
+                    </svg> <span>Star</span></a></div>
+        </span>
+    </div>
+</body>
+
+</html>
