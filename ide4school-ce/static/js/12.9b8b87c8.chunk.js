@@ -1,0 +1,2 @@
+(this["webpackJsonp@raspberrypifoundation/editor-ui"]=this["webpackJsonp@raspberrypifoundation/editor-ui"]||[]).push([[12],{719:function(e,t,c){"use strict";c.r(t);var n=c(1),o=c(17),a=c(102),i=c(14);t.default=function(){var e=Object(o.t)().locale,t=Object(a.b)().i18n,c=Object(o.o)(),r=Object(o.q)();return Object(n.useEffect)((function(){if(!t.options.locales.includes(e)){var n=new RegExp("^/".concat(e));r(c.pathname.replace(n,"/ide4school-ce/".concat(t.language)))}}),[e,t,c,r]),Object(i.jsx)(o.b,{})}}}]);
+//# sourceMappingURL=12.9b8b87c8.chunk.js.map
