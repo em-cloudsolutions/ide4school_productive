@@ -7,89 +7,49 @@ if(!isset($_SESSION['login_state']) && $db->getMFAMethodsFromUser($_SESSION['use
     header("Location: 2fa");
 }
 
-$getCurrentUserData = $db->getCurrentUserInformations();
-
-
-if(isset($_GET['clicksave']))
-{
-?>
-<!DOCTYPE html>
-<html lang="de">
-    <head>
-        <meta charset="utf-8">
-</head>
-<body>
-    <form action="ide" method="POST">
-        <input type="hidden" name="project_id">
-        <input type="hidden" name="project_name">
-        <input type="hidden" name="project_type">
-        <input type="hidden" name="project_content">
-        <input type="hidden" name="clicksave_action">
-    </form>
-    <script>
-        //Lese Wert von key "project" aus LocalStorage aus
-        var project = localStorage.getItem("project");
-        var project_id = JSON.parse(project)['identifier'];
-        var project_name = JSON.parse(project)['name'];
-        var project_type = JSON.parse(project)['project_type'];
-        //Setze die Werte in das Formular
-        document.getElementsByName("project_id")[0].value = project_id;
-        document.getElementsByName("project_name")[0].value = project_name;
-        document.getElementsByName("project_type")[0].value = project_type;
-        document.getElementsByName("project_content")[0].value = project;
-        //Sende das Formular ab
-        document.forms[0].submit();
-    </script>
-</body>
-</html>
-<?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_SERVER['CONTENT_TYPE'] == 'application/json' && isset($_GET['clicksave'])) {
+    $project = file_get_contents('php://input');
+    $project_decoded = json_decode($project, true);
+        $project_id = $project_decoded['identifier'];
+        if($project_id == "new") {
+            $new_project_identifier = $db->createNewProjectThroughClicksave($project);
+            //Gebe sowohl den neuen Identifier als auch ein 200 OK an den xhr request zurück, damit ich diesen dort auswerten kann
+            if($new_project_identifier != NULL) {
+                header('HTTP/1.1 200 OK');
+                //gebe ein json obkjekt mit dem identifier zurück
+                $reponse = array("identifier" => $new_project_identifier);
+                echo json_encode($reponse);
+            }
+            else {
+                header('HTTP/1.1 400 Bad Request');
+            }
+        }
+        else {
+            if($db->updateProjectCode($project_id, $project)) {
+                header('HTTP/1.1 200 OK');
+            }
+            else {
+                header('HTTP/1.1 400 Bad Request');
+            }
+        }
+} 
+elseif
+    ($_SERVER['REQUEST_METHOD'] == 'POST' && $_SERVER['CONTENT_TYPE'] == 'application/json' && isset($_GET['autosave'])) {
+        $project = file_get_contents('php://input');
+        $project_decoded = json_decode($project, true);
+    $project_id = $project_decoded['identifier'];
+    if($project_id != "new") {
+        if($db->updateProjectCode($project_id, $project)) {
+            header('HTTP/1.1 200 OK');
+        }
+        else {
+            header('HTTP/1.1 400 Bad Request');
+        }
+    }          
+    }
+else {
+  // Gib einen Fehler zurück
+  header('HTTP/1.1 400 Bad Request');
 }
-
-if(isset($_GET['autosave']))
-{
-    ?>
-    <!DOCTYPE html>
-<html lang="de">
-    <head>
-        <meta charset="utf-8">
-</head>
-<body>
-    <script>
-        //Lese Wert von key "project" aus LocalStorage aus
-        var project = localStorage.getItem("project");
-        var project_id = JSON.parse(project)['identifier'];
-        var project_name = JSON.parse(project)['name'];
-        var project_type = JSON.parse(project)['project_type'];
-        
-        //Sende am besten per fetch anstatt per form
-        fetch('ide', {
-            method: 'POST',
-            body: JSON.stringify({
-                project_id: project_id,
-                project_name: project_name,
-                project_type: project_type,
-                project_content: project,
-                autosave_action: true
-            })
-        });
-    </script>
-</body>
-</html>
-<?php
-}
-
-//Entnehme das Projekt aus dem POST-Request
-if(isset($_POST['clicksave_action']))
-{
-    $project = json_decode($_POST['project_content'], true);
-    $project_id = $project['identifier'];
-    $project_content = $project['content'];
-
-    $db->updateProject($project_id, $project_content);
-    die();
-}
-
 
 ?>
-
-

@@ -78,10 +78,10 @@ if (isset($data['createProject'])) {
 
 
     if($project_category == "website") {
-        $project_content = '{"identifier":"blank-html-starter","project_type":"html","locale":"en","name":"Neues Projekt","user_id":null,"components":[{"id":"e732f181-933f-4324-844a-c05cedd9c56c","name":"index","extension":"html","content":""},{"id":"b06d109f-71e4-4227-8bce-fb67a9599381","name":"styles","extension":"css","content":""}],"image_list":[]}';
+        $project_content = '{"identifier":"new","project_type":"html","locale":"en","name":"Neues Projekt","user_id":null,"components":[{"id":"e732f181-933f-4324-844a-c05cedd9c56c","name":"index","extension":"html","content":""},{"id":"b06d109f-71e4-4227-8bce-fb67a9599381","name":"styles","extension":"css","content":""}],"image_list":[]}';
     }
     else {
-        $project_content = '{"project_type":"python","name":"Neues Projekt","locale":null,"components":[{"extension":"py","name":"main","content":"","default":true}],"image_list":[]}';
+        $project_content = '{"identifier":"new","project_type":"python","name":"Neues Projekt","locale":null,"components":[{"extension":"py","name":"main","content":"","default":true}],"image_list":[]}';
     }
     
 

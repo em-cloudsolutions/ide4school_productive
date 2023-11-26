@@ -169,7 +169,8 @@ if(isset($_POST['returnProject'])) {
 
 <script>
         function openEditor() {
-            localStorage.setItem('project', '<?php printf($project_data['project_content']); ?>');
+            //Füge einen neuen localstorage item hinzu, key project und value ist der $project_data['project_content'], bei dem jedoch alle schrägstriche erhalten bleiben sollen (raw)
+            localStorage.setItem("project", `<?=$project_data['project_content']?>`);
             window.location.href = "/ide4school-ce";
         }
     </script>

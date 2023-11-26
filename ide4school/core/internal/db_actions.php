@@ -2507,7 +2507,33 @@ class DB {
         $stmt->bindParam(":reviewed", $reviewed);
         $stmt->bindParam(":project_content", $project_content);
         if($stmt->execute()) {
-            return true;
+            //Ändere den JSON Code in project_content so, dass "identifier" nun den Wert der ID hat
+            $stmt = self::$_db->prepare("SELECT * FROM projects WHERE name=:project_name AND description=:project_description AND owner=:owner AND shared=:shared AND category=:category AND project_content=:project_content");
+            $stmt->bindParam(":project_name", $project_name);
+            $stmt->bindParam(":project_description", $project_description);
+            $stmt->bindParam(":owner", $_SESSION['user_id']);
+            $stmt->bindParam(":shared", $shared);
+            $stmt->bindParam(":category", $project_category);
+            $stmt->bindParam(":project_content", $project_content);
+
+            $stmt->execute();
+            $result = $stmt->fetch();
+            $saved_encoded_project_content = $result['project_content'];
+            $saved_decoded_project_content = json_decode($saved_encoded_project_content, true);
+            if($saved_decoded_project_content['identifier'] == "new") {
+                //ändere den JSON Code in project_contet so, dass "identifier" nun den Wert der ID hat
+                $saved_decoded_project_content['identifier'] = $result['id'];
+                $saved_encoded_project_content = json_encode($saved_decoded_project_content);
+                //Speichere den neuen JSON Code in der Datenbank
+                if(self::updateProjectCode($result['id'], $saved_encoded_project_content)) {
+                    return true;
+                } else {
+                    return false;
+                }   
+            }
+            else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -2527,7 +2553,7 @@ class DB {
     function createNewProjectThroughClicksave($project_content) {
         //Lege Project Parameter fest (lese aus $project_content im JSON sowohl den project_type, als auch den Namen aus und setzte visibility auf 1)
         $decoded_project_content = json_decode($project_content, true);
-        $project_name = $decoded_project_content['project_name'];
+        $project_name = $decoded_project_content['name'];
         $project_description = "Neues über Editor erstelltes Projekt.";
         $project_visibility = "private";
         $project_category = $decoded_project_content['project_type'];
@@ -2535,28 +2561,17 @@ class DB {
 
         //Erstelle das Projekt in der Datenbank
         if(self::createProject($project_name, $project_description, $project_visibility, $project_category, $project_code)) {
-            //ändere den JSON Code in project_contet so, dass "identifier" nun den Wert der ID hat
-            $_stmt = self::$_db->prepare("SELECT id FROM projects WHERE name=:project_name AND description=:project_description AND owner=:owner AND shared=:shared AND category=:category AND created_at=:created_at AND submitted=:submitted AND reviewed=:reviewed AND project_content=:project_content");
-            $_stmt->bindParam(":project_name", $project_name);
-            $_stmt->bindParam(":project_description", $project_description);
-            $_stmt->bindParam(":owner", $_SESSION['user_id']);
-            $shared = 0;
-            $_stmt->bindParam(":shared", $shared);
-            $_stmt->bindParam(":category", $project_category);
-            $stmt->execute();
-            $result = $stmt->fetch();
-            $saved_encoded_project_content = $result['project_content'];
-            $saved_decoded_project_content = json_decode($saved_encoded_project_content, true);
-            if($saved_decoded_project_content['identifier'] == "new") {
-                //ändere den JSON Code in project_contet so, dass "identifier" nun den Wert der ID hat
-                $saved_decoded_project_content['identifier'] = $result['id'];
-                $saved_encoded_project_content = json_encode($saved_decoded_project_content);
-                //Speichere den neuen JSON Code in der Datenbank
-                if(self::updateProjectCode($result['id'], $saved_encoded_project_content)) {
-                    return true;
-                } else {
-                    return false;
-                }   
+            //Ändere den JSON Code in project_content so, dass "identifier" nun den Wert der ID hat
+            $stmt = self::$_db->prepare("SELECT id FROM projects WHERE name=:project_name AND description=:project_description AND owner=:owner AND category=:category");
+            $stmt->bindParam(":project_name", $project_name);
+            $stmt->bindParam(":project_description", $project_description);
+            $stmt->bindParam(":owner", $_SESSION['user_id']);
+            $stmt->bindParam(":category", $project_category);
+            if($stmt->execute()) {
+                //Lese die ID des Projekts aus
+                $result = $stmt->fetch();
+                $project_id = $result['id'];
+                return $project_id;
             }
             else {
                 return false;

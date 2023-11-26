@@ -21,8 +21,7 @@
 
     define( 'ROOTPATH', dirname(__FILE__) . '/' );
     include("router.php");
-    echo' <noscript><h2 style="color: red; font-weight: 400; text-align: center;">Warnung! <br />Diese Seite funktioniert nur mit Javascript!<br />Bitte stelle sicher, das Javascript in deinem Browser aktiviert ist, <br />um die gewünschte Seite anzeigen zu können!</h1></noscript>';
-    echo "<!-- Programmierung & Entwicklung: em CLOUDsolutions - www.em-cloud-solutions.de-->";
+    
     
 ?>
     
