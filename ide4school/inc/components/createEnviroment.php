@@ -52,7 +52,7 @@ $new_python_project = '{"identifier":"new","project_type":"python","name":"Neues
                                                 <div class="card-body">
                                                     <img src="app-assets/images/setupEnviroment/python.png" width="20%" class="mb-2 mt-5" alt="svg img" />
                                                     <h3>Python</h3>
-                                                    <h5>Einfacher Editor</h5>
+                                                    
                                                     <p class="card-text">Entwicklung erster Programme in Python.</p>
                                                     
                                                     <button OnClick="setupEnviroment('python')" class="btn w-100 btn-primary mt-2">Loslegen</button>
@@ -84,7 +84,7 @@ $new_python_project = '{"identifier":"new","project_type":"python","name":"Neues
                                                 <div class="card-body">
                                                     <img src="app-assets/images/setupEnviroment/html5.png" width="20%" class="mb-2 mt-5" alt="svg img" />
                                                     <h3>HTML / CSS</h3>
-                                                    <h5>Einfacher Editor</h5>
+                                                    
                                                     <p class="card-text">Für die Entwicklung einer Webseite</p>
                                                     
                                                     <button OnClick="setupEnviroment('website')" class="btn w-100 btn-primary mt-2">Loslegen</button>
