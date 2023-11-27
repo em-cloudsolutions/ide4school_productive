@@ -10,7 +10,7 @@ if(!isset($_SESSION['login_state']) && $db->getMFAMethodsFromUser($_SESSION['use
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_SERVER['CONTENT_TYPE'] == 'application/json' && isset($_GET['clicksave'])) {
     $project = file_get_contents('php://input');
     $project_decoded = json_decode($project, true);
-    $project_uriencoded = urlencode($project);
+    $project_uriencoded = rawurlencode($project);
         $project_id = $project_decoded['identifier'];
         if($project_id == "new") {
             $new_project_identifier = $db->createNewProjectThroughClicksave($project_uriencoded);
@@ -38,7 +38,7 @@ elseif
     ($_SERVER['REQUEST_METHOD'] == 'POST' && $_SERVER['CONTENT_TYPE'] == 'application/json' && isset($_GET['autosave'])) {
         $project = file_get_contents('php://input');
         $project_decoded = json_decode($project, true);
-        $project_uriencoded = urlencode($project);
+        $project_uriencoded = rawurlencode($project);
     $project_id = $project_decoded['identifier'];
     if($project_id != "new") {
         if($db->updateProjectCode($project_id, $project_uriencoded)) {

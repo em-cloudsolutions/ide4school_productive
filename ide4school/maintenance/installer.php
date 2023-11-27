@@ -77,15 +77,13 @@ if (isset($data['install'])) {
 
 
         $admin_hashed_password = password_hash($admin_password, PASSWORD_DEFAULT);
-        $sql = "INSERT INTO users (firstName, secondName, username, password, role, class, institution, user_dir) VALUES(:firstName, :secondName, :username, :password, :role, :class, :institution, :user_dir)";
+        $sql = "INSERT INTO users (firstName, secondName, username, password, role, class, institution) VALUES(:firstName, :secondName, :username, :password, :role, :class, :institution)";
         $stmt = $pdo->prepare($sql);
-        $user_dir = "files/users/" .  $username;
         $role = "Administrator";
         $class = "Lehrer";
         $stmt->bindParam(":secondName", $secondName);
         $stmt->bindParam(":role", $role);
         $stmt->bindParam(":class", $class);
-        $stmt->bindParam(":user_dir", $user_dir);
         $stmt->bindParam(':institution', $school_name);
         $stmt->bindParam(':firstName', $admin_first_name);
         $stmt->bindParam(':secondName', $admin_second_name);
@@ -94,10 +92,7 @@ if (isset($data['install'])) {
         // Weitere Formularfelder hinzufügen
         $stmt->execute();
 
-        $user_dir = "files/users/" .  $username;
-        $submission_dir = 'files/submissions/' . $username;
-        mkdir($user_dir, 0777, true);
-        mkdir($submission_dir, 0777, true);
+
 
         if (isset($data['connect_repo']) && $data['connect_repo'] == 'on') {
           $connect_repo = 1;

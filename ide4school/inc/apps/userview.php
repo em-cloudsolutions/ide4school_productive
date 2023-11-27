@@ -67,17 +67,11 @@ if(isset($_POST["updateUser"]))
   $spec_chars = array('Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y' );
   $username = strtr( $username, $spec_chars);
 
-  // Create User Dir
-  $user_dir = "files/users/" .  $username;
-  $submission_dir = 'files/submissions/' . $username;
-  $old_submission_dir = 'files/submissions/' . $user_data['username'];
-  $old_user_dir = $db->getUserDir($user_id);
+  
 
 
   // Insert in DB and create Folder
-  if($db->updateUser($firstName, $secondName, $class, $role, $username, $password, $user_dir, $log_user, $user_id)) {
-    rename($old_user_dir, $user_dir);
-    rename($old_submission_dir, $submission_dir);
+  if($db->updateUser($firstName, $secondName, $class, $role, $username, $password, $log_user, $user_id)) {
     header("Location: user&id=$user_id");
         }
     
@@ -130,65 +124,15 @@ if(isset($_POST["reinitUser"]))
     $spec_chars = array('Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y' );
     $username = strtr( $username, $spec_chars);
 
-    // Create User Dir
-    $user_dir = "files/users/" .  $username;
-    $submission_dir = 'files/submissions/' . $username;
-    $old_submission_dir = 'files/submissions/' . $user_data['username'];
-    $old_user_dir = $db->getUserDir($user_id);
+    
 
-    if($db->reinitUser($id, $firstName, $secondName, $class, $role, $username, $password, $user_dir)) {
-        //Lösche den alten Benutzerordner und den Abgabeordner
-        self::rec_rmdir($old_user_dir);
-        self::rec_rmdir($old_submission_dir);
-        //Erstelle den neuen Benutzerordner und den Abgabeordner
-        mkdir($user_dir);
-        mkdir($submission_dir);
-    }
-
-    function rec_rmdir ($unlink_path) {
-        if (!is_dir ($unlink_path)) {
-            return -1;
-        }
-        $dir = @opendir ($unlink_path);
-        if (!$dir) {
-            return -2;
-        }
-        while ($entry = @readdir($dir)) {
-            if ($entry == '.' || $entry == '..') continue;
-            if (is_dir ($unlink_path.'/'.$entry)) {
-                $res = rec_rmdir ($unlink_path.'/'.$entry);
-                if ($res == -1) {
-                    @closedir ($dir);
-                    return -2;
-                } else if ($res == -2) {
-                    @closedir ($dir);
-                    return -2;
-                } else if ($res == -3) {
-                    @closedir ($dir); 
-                    return -3; 
-                } else if ($res != 0) {
-                    @closedir ($dir);
-                    return -2;
-                }
-            } else if (is_file ($unlink_path.'/'.$entry) || is_link ($unlink_path.'/'.$entry)) {
-                $res = @unlink ($unlink_path.'/'.$entry);
-                if (!$res) {
-                    @closedir ($dir);
-                    return -2;
-                }
-            } else {
-                @closedir ($dir);
-                return -3;
+    if($db->reinitUser($id, $firstName, $secondName, $class, $role, $username, $password)) {
+        header("Location: users");
             }
-        }
-        @closedir ($dir);
-        $res = @rmdir ($unlink_path);
-        if (!$res) {
-            return -2;
-        }
-        return 0;
-    }
 }
+
+   
+
 
 
 // Logout User

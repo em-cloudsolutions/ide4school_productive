@@ -122,7 +122,7 @@
                                                                 <span>Deine eigene Webseite.</span>
                                                             </span>
                                                             <span>
-                                                                <input class="form-check-input" value="website" name="project_category" id="createAppEcommerce" type="radio" name="categoryRadio" />
+                                                                <input class="form-check-input" value="html" name="project_category" id="createAppEcommerce" type="radio" name="categoryRadio" />
                                                             </span>
                                                         </span>
                                                     </label>

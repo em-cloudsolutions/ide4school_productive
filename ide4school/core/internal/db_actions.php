@@ -403,14 +403,6 @@ class DB {
         return $result->institution_name;
     }
 
-    function getUserDir($user_id) {
-        $stmt = self::$_db->prepare("SELECT user_dir FROM users WHERE id=:id");
-        $stmt->bindParam(":id", $user_id);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_OBJ);
-        return $result->user_dir;
-    }
-
     function getClassDir($id) {
         $stmt = self::$_db->prepare("SELECT class_dir FROM classes WHERE id=:id");
         $stmt->bindParam(":id", $id);
@@ -427,15 +419,6 @@ class DB {
         return $result->password;
     }
     
-
-    function getMyUserDir() {
-        $stmt = self::$_db->prepare("SELECT user_dir FROM users WHERE id=:id");
-        $stmt->bindParam(":id", $_SESSION['user_id']);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_OBJ);
-        return $result->user_dir;
-    }
-
     function getUserActivity($user_fullname) {
         $stmt = self::$_db->prepare("SELECT * FROM logs WHERE text LIKE '%$user_fullname%' ORDER BY date DESC LIMIT 6");
         $stmt->execute();
@@ -659,8 +642,8 @@ class DB {
 
 
 
-    function createUser($firstName, $secondName, $class, $role, $username, $password, $user_dir, $log_user) {
-        $stmt = self::$_db->prepare("INSERT INTO users (firstName, secondName, username, password, role, class, institution, user_dir) VALUES(:firstName, :secondName, :username, :password, :role, :class, :institution, :user_dir)");
+    function createUser($firstName, $secondName, $class, $role, $username, $password, $log_user) {
+        $stmt = self::$_db->prepare("INSERT INTO users (firstName, secondName, username, password, role, class, institution) VALUES(:firstName, :secondName, :username, :password, :role, :class, :institution)");
         $stmt->bindParam(":firstName", $firstName);
         $stmt->bindParam(":secondName", $secondName);
         $stmt->bindParam(":username", $username);
@@ -671,7 +654,6 @@ class DB {
         $institution = self::getCurrentInstitution();
 
         $stmt->bindParam(":institution", $institution);
-        $stmt->bindParam(":user_dir", $user_dir);
         if($stmt->execute()) {
             $log = self::$_db->prepare("INSERT INTO logs (text) VALUES(:log_entry)");
             $log_message = $log_user .' hat einen neuen Benutzer mit dem Namen "'. $firstName . ' ' . $secondName .'" erstellt.';
@@ -848,8 +830,8 @@ class DB {
     }    
     
 
-    function updateUser($firstName, $secondName, $class, $role, $username, $password, $user_dir, $log_user, $user_id) {
-        $stmt = self::$_db->prepare("UPDATE users SET firstName=:firstName, secondName=:secondName, username=:username, password=:password, role=:role, class=:class, institution=:institution, user_dir=:user_dir WHERE id=:id");
+    function updateUser($firstName, $secondName, $class, $role, $username, $password, $log_user) {
+        $stmt = self::$_db->prepare("UPDATE users SET firstName=:firstName, secondName=:secondName, username=:username, password=:password, role=:role, class=:class, institution=:institution WHERE id=:id");
         $stmt->bindParam(":firstName", $firstName);
         $stmt->bindParam(":secondName", $secondName);
         $stmt->bindParam(":username", $username);
@@ -862,7 +844,6 @@ class DB {
         $institution = self::getCurrentInstitution();
 
         $stmt->bindParam(":institution", $institution);
-        $stmt->bindParam(":user_dir", $user_dir);
         if($stmt->execute()) {
             $log = self::$_db->prepare("INSERT INTO logs (text) VALUES(:log_entry)");
             $log_message = $log_user .' hat den Benutzer mit dem Namen "'. $firstName . ' ' . $secondName .'" bearbeitet.';
@@ -927,13 +908,12 @@ class DB {
 
 
 
-    function delete_user_emergency($firstName, $secondName, $class, $role, $username, $password, $user_dir) {
-        $stmt = self::$_db->prepare("DELETE FROM users WHERE firstName=:firstName AND secondName=:secondName AND class=:class AND role=:role AND user_dir=:user_dir");
+    function delete_user_emergency($firstName, $secondName, $class, $role, $username, $password) {
+        $stmt = self::$_db->prepare("DELETE FROM users WHERE firstName=:firstName AND secondName=:secondName AND class=:class AND role=:role");
         $stmt->bindParam(":firstName", $firstName);
         $stmt->bindParam(":secondName", $secondName);
         $stmt->bindParam(":class", $class);
         $stmt->bindParam(":role", $role);
-        $stmt->bindParam(":user_dir", $user_dir);
         $stmt->execute();
     }
 
@@ -2200,7 +2180,7 @@ class DB {
         }
     }
 
-    function reinitUser($id, $firstName, $secondName, $class, $role, $username, $password, $user_dir) {
+    function reinitUser($id, $firstName, $secondName, $class, $role, $username, $password) {
         //Lösche alten Benutzer mit der ID
         $stmt = self::$_db->prepare("DELETE FROM users WHERE id=:id");
         $stmt->bindParam(":id", $id);
@@ -2208,7 +2188,7 @@ class DB {
         if($stmt->execute()) {
             //Erstelle einen neuen Benutzer mit den übergebenen Daten, ermittle den Parameter für die Institution aus self::getCurrentInstitution()
             $institution = self::getCurrentInstitution();
-            $stmt = self::$_db->prepare("INSERT INTO users (first_name, second_name, class, role, institution, avatar, username, password, user_dir, institution) VALUES(:first_name, :second_name, :class, :role, :institution, :avatar, :username, :password, :user_dir, :institution)");
+            $stmt = self::$_db->prepare("INSERT INTO users (first_name, second_name, class, role, institution, avatar, username, password, institution) VALUES(:first_name, :second_name, :class, :role, :institution, :avatar, :username, :password, :institution)");
             $stmt->bindParam(":first_name", $firstName);
             $stmt->bindParam(":second_name", $secondName);
             $stmt->bindParam(":class", $class);
@@ -2217,7 +2197,6 @@ class DB {
             $stmt->bindParam(":avatar", $avatar);
             $stmt->bindParam(":username", $username);
             $stmt->bindParam(":password", $password);
-            $stmt->bindParam(":user_dir", $user_dir);
             $stmt->bindParam(":institution", $institution);
             if($stmt->execute()) {
                 //Erstelle einen Logeintrag
@@ -2414,7 +2393,21 @@ class DB {
         $stmt->bindParam(":return_at", $return_at);
         $stmt->bindParam(":project_id", $project_id);
         if($stmt->execute()) {
-            return true;
+            //Lese project_content aus, dekodiere es und ändere den wert von to_review auf true, dann encodiere es wieder und speichere es in der Datenbank
+            $stmt = self::$_db->prepare("SELECT * FROM projects WHERE id=:project_id");
+            $stmt->bindParam(":project_id", $project_id);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            $saved_encoded_project_content = $result['project_content'];
+            $saved_decoded_project_content = json_decode(urldecode($saved_encoded_project_content), true);
+            $saved_decoded_project_content['to_review'] = false;
+            $saved_encoded_project_content = rawurlencode(json_encode($saved_decoded_project_content));
+            //Speichere den neuen JSON Code in der Datenbank
+            if(self::updateProjectCode($project_id, $saved_encoded_project_content)) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -2461,7 +2454,21 @@ class DB {
         $stmt = self::$_db->prepare("UPDATE projects SET submitted=1 WHERE id=:project_id");
         $stmt->bindParam(":project_id", $project_id);
         if($stmt->execute()) {
-            return true;
+            //Lese project_content aus, dekodiere es und ändere den wert von to_review auf true, dann encodiere es wieder und speichere es in der Datenbank
+            $stmt = self::$_db->prepare("SELECT * FROM projects WHERE id=:project_id");
+            $stmt->bindParam(":project_id", $project_id);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            $saved_encoded_project_content = $result['project_content'];
+            $saved_decoded_project_content = json_decode(urldecode($saved_encoded_project_content), true);
+            $saved_decoded_project_content['to_review'] = true;
+            $saved_encoded_project_content = rawurlencode(json_encode($saved_decoded_project_content));
+            //Speichere den neuen JSON Code in der Datenbank
+            if(self::updateProjectCode($project_id, $saved_encoded_project_content)) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -2523,7 +2530,8 @@ class DB {
             if($saved_decoded_project_content['identifier'] == "new") {
                 //ändere den JSON Code in project_contet so, dass "identifier" nun den Wert der ID hat
                 $saved_decoded_project_content['identifier'] = $result['id'];
-                $saved_encoded_project_content = urlencode(json_encode($saved_decoded_project_content));
+                $saved_decoded_project_content['name'] = $project_name;
+                $saved_encoded_project_content = rawurlencode(json_encode($saved_decoded_project_content));
                 //Speichere den neuen JSON Code in der Datenbank
                 if(self::updateProjectCode($result['id'], $saved_encoded_project_content)) {
                     return true;
@@ -2582,9 +2590,39 @@ class DB {
         }
     }
 
+    function editProjectDescription($project_id, $new_project_description) {
+        $stmt = self::$_db->prepare("UPDATE projects SET description=:new_project_description WHERE id=:project_id");
+        $stmt->bindParam(":new_project_description", $new_project_description);
+        $stmt->bindParam(":project_id", $project_id);
+        if($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-
-
+    function editProjectName($project_id, $new_name) {
+        $stmt = self::$_db->prepare("SELECT project_content FROM projects WHERE id=:project_id");
+        $stmt->bindParam(":project_id", $project_id);
+        if($stmt->execute()) {
+            $result = $stmt->fetch();
+            $project_content = $result['project_content'];
+            $decoded_project_content = json_decode(urldecode($project_content), true);
+            $decoded_project_content['name'] = $new_name;
+            $encoded_project_content = rawurlencode(json_encode($decoded_project_content));
+            $stmt = self::$_db->prepare("UPDATE projects SET project_content=:project_content WHERE id=:project_id");
+            $stmt->bindParam(":project_content", $encoded_project_content);
+            $stmt->bindParam(":project_id", $project_id);
+            if($stmt->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
 
 
 

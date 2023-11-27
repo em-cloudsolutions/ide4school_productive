@@ -70,20 +70,14 @@ if(isset($_POST["createUser"]))
           $spec_chars = array('Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y' );
           $username = strtr( $username, $spec_chars);
 
-          // Create User Dir
-          $user_dir = "files/users/" .  $username;
-          $submission_dir = 'files/submissions/' . $username;
+          
 
           // Insert in DB and create Folder
-          if($db->createUser($firstName, $secondName, $class, $role, $username, $password, $user_dir, $log_user)) {
-            if (!file_exists($user_dir)) {
-                if(mkdir($user_dir, 0777, true)) {
-                    if (!file_exists($submission_dir)) {
-                        if(mkdir($submission_dir, 0777, true)) {
-                            header("Location: users");
-                        }
-                        else {
-                            $db->delete_user_emergency($firstName, $secondName, $class, $role, $username, $password, $user_dir);
+          if($db->createUser($firstName, $secondName, $class, $role, $username, $password, $log_user)) {
+                  header("Location: users");
+            }
+            else {
+                            $db->delete_user_emergency($firstName, $secondName, $class, $role, $username, $password);
                             echo'
                             <div class="alert alert-danger" role="alert">
                                                                 <h4 class="alert-heading">Dateifehler</h4>
@@ -93,32 +87,8 @@ if(isset($_POST["createUser"]))
                                                             </div>';
                             sleep(3);
                             header("Location: users");
-                        }
-                        }
-                }
-                else {
-                    $db->delete_user_emergency($firstName, $secondName, $class, $role, $username, $password, $user_dir);
-                    echo'
-                    <div class="alert alert-danger" role="alert">
-                                                        <h4 class="alert-heading">Datenbankfehler</h4>
-                                                        <div class="alert-body">
-                                                        Benutzer konnte nicht erstellt werden! Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com
-                                                        </div>
-                                                    </div>';
-                    sleep(3);
-                    header("Location: users");
-                }
-                }
             }
-            else {
-                echo'
-                <div class="alert alert-danger" role="alert">
-                                                    <h4 class="alert-heading">Datenbankfehler</h4>
-                                                    <div class="alert-body">
-                                                    Benutzer konnte nicht erstellt werden! Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com
-                                                    </div>
-                                                </div>';
-            }
+                        
     };
 
     // Import users
@@ -325,49 +295,15 @@ if(isset($_POST["importUsers"]))
           $unencrypted_password = $password;
           $password = password_hash($unencrypted_password, PASSWORD_DEFAULT);
 
-          // Create User Dir
-          $user_dir = "files/users/" .  $username;
-          $submission_dir = 'files/submissions/' . $username;
-          $project_dir = 'files/projects/' . $username;
+          
 
           // Insert in DB and create Folder
-          if($db->createUser($firstName, $secondName, $class, $role, $username, $password, $user_dir, $log_user)) {
-            if (!file_exists($user_dir)) {
-                if(mkdir($user_dir, 0777, true)) {
-                    if (!file_exists($submission_dir)) {
-                        if(mkdir($submission_dir, 0777, true)) {
-                            if (!file_exists($project_dir)) {
-                                if(mkdir($project_dir, 0777, true)) {
-                                    $success = true;
-                                }
-                                else {
-                                    $db->delete_user_emergency($firstName, $secondName, $class, $role, $username, $password, $user_dir);
-                                    echo'
-                                    <div class="alert alert-danger" role="alert">
-                                                                        <h4 class="alert-heading">Dateifehler</h4>
-                                                                        <div class="alert-body">
-                                                                        Benutzerordner konnte nicht erstellt werden. Vorgang abgebrochen. Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com
-                                                                        </div>
-                                                                    </div>';
-                                    sleep(3);
-                                    header("Location: users");
-                                }
-                            }
-                            else {
-                                $db->delete_user_emergency($firstName, $secondName, $class, $role, $username, $password, $user_dir);
-                                echo'
-                                <div class="alert alert-danger" role="alert">
-                                                                    <h4 class="alert-heading">Dateifehler</h4>
-                                                                    <div class="alert-body">
-                                                                    Benutzerordner konnte nicht erstellt werden. Vorgang abgebrochen. Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com
-                                                                    </div>
-                                                                </div>';
-                                sleep(3);
-                                header("Location: users");
-                            }
-                        }
+          if($db->createUser($firstName, $secondName, $class, $role, $username, $password, $log_user)) {
+                                $success = true;
+            }
+                        
                         else {
-                            $db->delete_user_emergency($firstName, $secondName, $class, $role, $username, $password, $user_dir);
+                            $db->delete_user_emergency($firstName, $secondName, $class, $role, $username, $password);
                             echo'
                             <div class="alert alert-danger" role="alert">
                                                                 <h4 class="alert-heading">Dateifehler</h4>
@@ -378,39 +314,9 @@ if(isset($_POST["importUsers"]))
                             sleep(3);
                             header("Location: users");
                         }
-                        }
-                }
-                else {
-                    $db->delete_user_emergency($firstName, $secondName, $class, $role, $username, $password, $user_dir);
-                    echo'
-                    <div class="alert alert-danger" role="alert">
-                                                        <h4 class="alert-heading">Datenbankfehler</h4>
-                                                        <div class="alert-body">
-                                                        Benutzer konnte nicht erstellt werden! Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com
-                                                        </div>
-                                                    </div>';
-                    sleep(3);
-                    header("Location: users");
-                }
-                }
-            }
-            else {
-                echo'
-                <div class="alert alert-danger" role="alert">
-                                                    <h4 class="alert-heading">Datenbankfehler</h4>
-                                                    <div class="alert-body">
-                                                    Benutzer konnte nicht erstellt werden! Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com
-                                                    </div>
-                                                </div>';
-            }
-
-
-                
-            }
-
-            
-
+                        
         }
+    }
 
     if(isset($success)) {
         $html .= '                  </table>
@@ -476,7 +382,7 @@ if(isset($_POST["importUsers"]))
 
 
     // Set Focus Mode offline
-        if(isset($_GET["action"])) {
+if(isset($_GET["action"])) {
             {
             $action = $_GET["action"];
             $user_id = $_GET["user_id"];
@@ -498,7 +404,7 @@ if(isset($_POST["importUsers"]))
               }
 
      // Set Focus Mode online
-            if($action == "setUserListenModeOnline") {
+if($action == "setUserListenModeOnline") {
               if($db->setUserListenModeToOnline($user_id)) {
                 $return_to = $_SESSION["class_return_destination"];
                 header("Location: users&$return_to");
@@ -519,110 +425,12 @@ if(isset($_POST["importUsers"]))
           }
 
     // Delete User
-    if(isset($_POST["delete"])) {
-        {
+if(isset($_POST["delete"])) {
         $id = $_POST["id"];
         $username = $db->getUsernameViaID($id);
-        $user_dir_for_delete = $db->getUserDir($id);
-        $submission_dir_for_delete = 'files/submissions/' . $username;
-
         if($db->deleteUser($id)) {
-
-                // Delete user folder
-                  // -- Delete function
-  function rec_rmdir ($unlink_path) {
-    if (!is_dir ($unlink_path)) {
-        return -1;
-    }
-    $dir = @opendir ($unlink_path);
-    if (!$dir) {
-        return -2;
-    }
-    while ($entry = @readdir($dir)) {
-        if ($entry == '.' || $entry == '..') continue;
-        if (is_dir ($unlink_path.'/'.$entry)) {
-            $res = rec_rmdir ($unlink_path.'/'.$entry);
-            if ($res == -1) {
-                @closedir ($dir);
-                return -2;
-            } else if ($res == -2) {
-                @closedir ($dir);
-                return -2;
-            } else if ($res == -3) {
-                @closedir ($dir); 
-                return -3; 
-            } else if ($res != 0) {
-                @closedir ($dir);
-                return -2;
-            }
-        } else if (is_file ($unlink_path.'/'.$entry) || is_link ($unlink_path.'/'.$entry)) {
-            $res = @unlink ($unlink_path.'/'.$entry);
-            if (!$res) {
-                @closedir ($dir);
-                return -2;
-            }
-        } else {
-            @closedir ($dir);
-            return -3;
-        }
-    }
-    @closedir ($dir);
-    $res = @rmdir ($unlink_path);
-    if (!$res) {
-        return -2;
-    }
-    return 0;
-}
-
-    // -- Delete command 
-    $unlink_path = $user_dir_for_delete;
-    $res = rec_rmdir ($unlink_path);
-    switch ($res) {
-      case 0:
-        $unlink_path = $submission_dir_for_delete;
-        $res = rec_rmdir ($unlink_path);
-        switch ($res) {
-          case 0:
-            header("users");
-            break;
-          case -1:
-            echo('Das war kein Verzeichnis! Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com');
-            break;
-          case -2:
-            
-            echo('Fehler beim Löschen des Verzeichnisses! Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com');
-            break;
-          case -3:
-           
-            echo('Dieser Dateityp wird nicht unterstützt! Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com');
-            break;
-          default:
-            echo('Unbekannter Fehler! Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com');
-            break;
+                header("Location: users");  
           }
-        break;
-      case -1:
-        echo('Das war kein Verzeichnis! Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com');
-        break;
-      case -2:
-        
-        echo('Fehler beim Löschen des Verzeichnisses! Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com');
-        break;
-      case -3:
-       
-        echo('Dieser Dateityp wird nicht unterstützt! Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com');
-        break;
-      default:
-        echo('Unbekannter Fehler! Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com');
-        break;
-      }
-
-
-                // Redirect
-                header("Location: users");
-                
-          }
-
         else {
             echo'
             <div class="alert alert-danger" role="alert">
@@ -636,8 +444,8 @@ if(isset($_POST["importUsers"]))
                 header("Location: users");
         }
     
-        }
-      }
+     }
+
 
 // Logout User
 

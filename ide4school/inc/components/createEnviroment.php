@@ -5,19 +5,25 @@ if(!$db->isUserLoggedIn()) {
 }
 if(!isset($_SESSION['login_state']) && $db->getMFAMethodsFromUser($_SESSION['user_id']) != NULL) {
     header("Location: 2fa");
-}?>
+}
+
+$new_html_project = '{"identifier":"new","project_type":"html","locale":"en","name":"Neues Projekt","user_id":null,"components":[{"id":"e732f181-933f-4324-844a-c05cedd9c56c","name":"index","extension":"html","content":""},{"id":"b06d109f-71e4-4227-8bce-fb67a9599381","name":"styles","extension":"css","content":""}],"image_list":[], "to_review":false}';
+$new_python_project = '{"identifier":"new","project_type":"python","name":"Neues Projekt","locale":null,"components":[{"extension":"py","name":"main","content":"","default":true}],"image_list":[], "to_review":false}';
+
+?>
 <script src="app-assets/js/scripts/pages/page-pricing.js"></script>
 <script>
-    function setupEnviroment(ide_code){
-        document.getElementById("ide_code").value = ide_code;
-        document.getElementById("setupEnviromentForm").submit();
+    function setupEnviroment(ide_short){
+        if(ide_short == "python"){
+            localStorage.setItem("project", decodeURIComponent(`<?=$new_python_project?>`));
+            window.location.href = "/ide4school-ce";
+        } else if(ide_short == "website"){
+            localStorage.setItem("project", decodeURIComponent(`<?=$new_html_project?>`));
+            window.location.href = "/ide4school-ce";
+        }
     }
 </script>
 
-<form action="ide" method="post" id="setupEnviromentForm">
-            <input name="ide_code" type="text" hidden id="ide_code">
-            <input name="setupEnviroment" type="text" hidden id="setupEnviroment">
-        </form>
 
 <!-- pricing modal  -->
 <div class="modal fade" id="createEnviromentModal" tabindex="-1" aria-labelledby="createEnviromentModal" aria-hidden="true">
@@ -44,12 +50,12 @@ if(!isset($_SESSION['login_state']) && $db->getMFAMethodsFromUser($_SESSION['use
                                         <div class="col-12 col-lg-4">
                                             <div class="card basic-pricing border text-center shadow-none">
                                                 <div class="card-body">
-                                                    <img src="app-assets/images/setupEnviroment/html5.png" width="20%" class="mb-2 mt-5" alt="svg img" />
-                                                    <h3>HTML</h3>
+                                                    <img src="app-assets/images/setupEnviroment/python.png" width="20%" class="mb-2 mt-5" alt="svg img" />
+                                                    <h3>Python</h3>
                                                     <h5>Einfacher Editor</h5>
-                                                    <p class="card-text">Für die Entwicklung einer Webseite</p>
+                                                    <p class="card-text">Entwicklung erster Programme in Python.</p>
                                                     
-                                                    <button OnClick="setupEnviroment('1')" class="btn w-100 btn-primary mt-2">Loslegen</button>
+                                                    <button OnClick="setupEnviroment('python')" class="btn w-100 btn-primary mt-2">Loslegen</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -59,31 +65,40 @@ if(!isset($_SESSION['login_state']) && $db->getMFAMethodsFromUser($_SESSION['use
                                         <div class="col-12 col-lg-4">
                                             <div class="card standard-pricing border-primary text-center shadow-none">
                                                 <div class="card-body">
+                                                    <h3>Wie funktioniert es?</h3>
+                                                    <br />
+                                                    <br />
+                                                    <h6>1. Schritt: Wählen der Entwicklungsumgebung</h6>
+                                                    <p class="card-text">Suche dir aus, ob du lieber ein Python Programm oder eine Webseite programmieren möchtest.</p>
+                                                    <h6>2. Schritt: Programmieren</h6>
+                                                    <p class="card-text">Programmiere nach Herzenslust an deinem Programm oder deiner Webseite und versuch neue Dinge.</p>
                                                     
-                                                    <img src="app-assets/images/setupEnviroment/python.png" width="25%" class="mb-1" alt="svg img" />
-                                                    <h3>Python</h3>
-                                                    <p class="card-text">Optimal für Schulaufgaben und kleinere Projekte</p>
-                                                   
-                                                    <button OnClick="setupEnviroment('2')" class="btn w-100 btn-primary mt-2">Loslegen</button>
                                                 </div>
                                             </div>
                                         </div>
                                         <!--/ standard plan -->
 
-                                        <!-- enterprise plan -->
+                                        <!-- basic plan -->
                                         <div class="col-12 col-lg-4">
-                                            <div class="card enterprise-pricing border text-center shadow-none">
+                                            <div class="card basic-pricing border text-center shadow-none">
                                                 <div class="card-body">
-                                                    <img src="app-assets/images/setupEnviroment/html5.png" width="39%" class="mb-2" alt="svg img" />
-                                                    <h3>HTML</h3>
-                                                    <h5>Erweiterter Editor</h5>
-                                                    <p class="card-text">Java, Ruby, C, C++, uvm.</p>
-                                                   
-                                                    <button OnClick="setupEnviroment('3')" class="btn w-100 btn-primary mt-2">Loslegen</button>
+                                                    <img src="app-assets/images/setupEnviroment/html5.png" width="20%" class="mb-2 mt-5" alt="svg img" />
+                                                    <h3>HTML / CSS</h3>
+                                                    <h5>Einfacher Editor</h5>
+                                                    <p class="card-text">Für die Entwicklung einer Webseite</p>
+                                                    
+                                                    <button OnClick="setupEnviroment('website')" class="btn w-100 btn-primary mt-2">Loslegen</button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--/ enterprise plan -->
+                                        <!--/ basic plan -->
+                                        <span style="text-align: center;">
+                                        <h6>3. Schritt: Projekt ggf. speichern?</h6>
+                                                    <p class="card-text">Grundsätzlich werden die hier entwickelten Programme <b>NICHT</b> gespeichert. Möchtest du ein Projekt anlegen um deinen Code zu speichern, klicke bitte <a href="projects"><u>hier</u></a>.
+                                                    <br />
+                                                    Im Notfall ist es dennoch möglich, deinen hier programmierten Code in einem neuen Projekt zu speichern. Klicke dazu einfach auf "Speichern" und du findest deinen Code unter deinen eingenen Projekten wieder.    
+                                                    </p>
+                                                    </span>
                                     </div>
                                     <!--/ pricing plan cards -->
 

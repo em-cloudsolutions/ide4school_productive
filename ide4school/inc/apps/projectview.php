@@ -81,7 +81,15 @@ if(isset($_POST['returnProject'])) {
     header("Location: project&id=$project_id");
 }
 
+if(isset($_POST['editDesc'])) {
+    $db->editProjectDescription($_POST['project_edit_desc_id'], $_POST['project_edit_desc_new']);
+    header("Location: project&id=$project_id");
+}
 
+if(isset($_POST['editName'])) {
+    $db->editProjectName($_POST['project_edit_name_id'], $_POST['project_edit_name_new']);
+    header("Location: project&id=$project_id");
+}
  
 
 
@@ -146,16 +154,14 @@ if(isset($_POST['returnProject'])) {
         document.getElementById("updateSessionClassForm").submit();
     }
 
-    function deleteProject(project_delete_path){
+    <?php
+if($project_data['owner'] == $_SESSION['user_id'] && $project_data['submitted'] == "0" || $project_data['owner'] == $_SESSION['user_id'] && $project_data['submitted'] == "1" && $project_data['reviewed'] == "1") { ?>
+
+    function deleteProject(project_id){
         if(confirm("Projekt wirklich löschen? Alle Daten werden unwiderruflich gelöscht!")) {
-        document.getElementById("project_delete_path").value = project_delete_path;
+        document.getElementById("project_delete_id").value = project_id;
         document.getElementById("deleteProjectForm").submit();
         }
-    }
-
-    function changeVisibility(project_id){
-        document.getElementById("project_visibility_id").value = project_id;
-        document.getElementById("changeVisibilityForm").submit();
     }
 
     function publishProject(project_id){
@@ -164,18 +170,58 @@ if(isset($_POST['returnProject'])) {
             document.getElementById("publishProjectForm").submit();
         }
     }
+<?php
+}
+?>
+
+    function changeVisibility(project_id){
+        document.getElementById("project_visibility_id").value = project_id;
+        document.getElementById("changeVisibilityForm").submit();
+    }
+
+<?php
+if($project_data['owner'] == $_SESSION['user_id'] && $project_data['submitted'] == "0" || $project_data['owner'] == $_SESSION['user_id'] && $project_data['submitted'] == "1" && $project_data['reviewed'] == "1") { ?>
+
+    function editDescription(project_id) {
+        if(confirm("Projektbeschreibung ändern?")) {
+            new_description = prompt("Neue Projektbeschreibung eingeben:");
+            document.getElementById("project_edit_desc_id").value = project_id;
+            document.getElementById("project_edit_desc_new").value = new_description;
+            document.getElementById("editDescForm").submit();
+        }
+    }
+
+    function editName(project_id) {
+        if(confirm("Projektnamen ändern?")) {
+            new_name = prompt("Neuen Projektnamen eingeben:");
+            document.getElementById("project_edit_name_id").value = project_id;
+            document.getElementById("project_edit_name_new").value = new_name;
+            document.getElementById("editNameForm").submit();
+        }
+    }
+
+<?php
+}
+?>
 
 </script>
 
+<?php
+if($getCurrentUserData['role'] == "Schüler" && $project_data['submitted'] == "1" && $project_data['reviewed'] == "0") {
+    //DO NOTHING
+}
+else {
+?>
 <script>
         function openEditor() {
-            //Füge einen neuen localstorage item hinzu, key project und value ist der $project_data['project_content'], bei dem jedoch alle schrägstriche erhalten bleiben sollen (raw)
             localStorage.setItem("project", decodeURIComponent(`<?=$project_data['project_content']?>`));
             window.location.href = "/ide4school-ce";
         }
     </script>
 
-
+<?php
+}
+?>
 
 
 
@@ -187,7 +233,7 @@ if(isset($_POST['returnProject'])) {
         </form>
 
         <form action="project&id=<?=$project_id?>" method="POST" id="deleteProjectForm">
-            <input name="project_delete_path" type="text" hidden id="project_delete_path">
+            <input name="project_delete_id" type="text" hidden id="project_delete_id">
             <input name="deleteProject" type="text" hidden id="deleteProject">
         </form>
 
@@ -200,6 +246,18 @@ if(isset($_POST['returnProject'])) {
             <input name="project_publish_id" type="text" hidden id="project_publish_id">
             <input name="publishProject" type="text" hidden id="publishProject">
         </form>
+
+        <form action="project&id=<?=$project_id?>" method="POST" id="editDescForm">
+            <input name="project_edit_desc_id" type="text" hidden id="project_edit_desc_id">
+            <input name="project_edit_desc_new" type="text" hidden id="project_edit_desc_new">
+            <input name="editDesc" type="text" hidden id="editDesc">
+        </form>
+
+        <form action="project&id=<?=$project_id?>" method="POST" id="editNameForm">
+            <input name="project_edit_name_id" type="text" hidden id="project_edit_name_id">
+            <input name="project_edit_name_new" type="text" hidden id="project_edit_name_new">
+            <input name="editName" type="text" hidden id="editName">
+
 
 <?php include('inc/components/header.php'); ?>
 
@@ -378,7 +436,10 @@ if(isset($_POST['returnProject'])) {
         </div>
     </div>
     <!-- END: Main Menu-->
-
+    <?php
+                                        $project_id = json_decode(urldecode($project_data['project_content']), true)['identifier'];
+                                        $project_name = json_decode(urldecode($project_data['project_content']), true)['name'];
+                                        ?>
     <!-- BEGIN: Content-->
     <div class="app-content content ">
         <div class="content-overlay"></div>
@@ -398,7 +459,7 @@ if(isset($_POST['returnProject'])) {
                                         <div class="d-flex align-items-center flex-column">
                                             <img class="img-fluid rounded mt-3 mb-2" src="app-assets/images/illustration/api.svg" height="450px" width="450px" alt="User avatar" />
                                             <div class="user-info text-center">
-                                                <h4><?=$project_data['name']?></h4>
+                                                <h4><?=$project_name?></h4>
                                                 <br />
                                             </div>
                                         </div>
@@ -407,15 +468,17 @@ if(isset($_POST['returnProject'])) {
                                     <h4 class="fw-bolder border-bottom pb-50 mb-1">Projektdetails</h4>
                                     <div class="info-container">
                                         <ul class="list-unstyled">
-
+                                        
 
                                             <li class="mb-75">
                                                 <span class="fw-bolder me-25">Name:</span>
-                                                <span><?=$project_data['name']?></span>
+                                                <span><?=$project_name?></span>
+                                                <span style="cursor: pointer;" OnClick="editName('<?=$project_id?>')"><?php if($project_data['owner'] == $_SESSION['user_id'] && $project_data['submitted'] == "0" || $project_data['owner'] == $_SESSION['user_id'] && $project_data['submitted'] == "1" && $project_data['reviewed'] == "1") { ?><i data-feather="edit"></i><?php } ?></span>
                                             </li>
                                             <li class="mb-75">
                                                 <span class="fw-bolder me-25">Beschreibung:</span>
                                                 <span><?=$project_data['description']?></span>
+                                                <span style="cursor: pointer;" OnClick="editDescription('<?=$project_id?>')"><?php if($project_data['owner'] == $_SESSION['user_id'] && $project_data['submitted'] == "0" || $project_data['owner'] == $_SESSION['user_id'] && $project_data['submitted'] == "1" && $project_data['reviewed'] == "1") { ?><i data-feather="edit"></i><?php } ?></span>
                                             </li>
                                             <li class="mb-75">
                                                 <span class="fw-bolder me-25">Erstellt am:</span>
@@ -479,7 +542,7 @@ if(isset($_POST['returnProject'])) {
                                             }
                                         ?><br /><br />
                                         
-                                            <a OnClick="deleteProject(`<?=$project_data['project_path']?>`)" class="btn btn-outline-danger suspend-user">Löschen</a>
+                                            <a OnClick="deleteProject(`<?=$project_data['id']?>`)" class="btn btn-outline-danger suspend-user">Löschen</a>
                                         
                                                 <?php
                                             }
@@ -673,8 +736,10 @@ if(isset($_POST['returnProject'])) {
                                         </button>
                                         <?php
                                             }
+                                        }
+                                        if($project_data['owner'] == $_SESSION['user_id'] && $getCurrentUserData['role'] == "Schüler" && $project_data['submitted'] == "0" || $project_data['owner'] == $_SESSION['user_id'] && $getCurrentUserData['role'] == "Schüler" && $project_data['submitted'] == "1" && $project_data['reviewed'] == "1") {
                                             ?>
-                                            <a OnClick="deleteProject(`<?=$project_data['project_path']?>`)" class="btn btn-outline-danger suspend-user">Löschen</a>
+                                            <a OnClick="deleteProject(`<?=$project_data['id']?>`)" class="btn btn-outline-danger suspend-user">Löschen</a>
                                                 <?php
                                             }
                                             ?>
@@ -708,16 +773,34 @@ if(isset($_POST['returnProject'])) {
                                            <div class="col-12">
                                                <div class="card">
                                                    <div class="card-header">
-                                                       <h4 class="card-title">Im Projekt enthaltene Dateien:</h4><button class="btn btn-primary" OnClick="openEditor()" type="button"><i data-feather="edit"></i> Entwicklungsumgebung öffnen</button>
+                                                       <h4 class="card-title">Im Projekt enthaltene Dateien:</h4><button class="btn btn-primary" OnClick="openEditor()" type="button"<?php if($getCurrentUserData['role'] == "Schüler" && $project_data['submitted'] == "1" && $project_data['reviewed'] == "0") { echo 'disabled'; } ?>><i data-feather="edit"></i> Entwicklungsumgebung öffnen</button>
                                                    </div>
                                                    <div class="card-body">
+                                                    <?php
+                                                    if($getCurrentUserData['role'] == "Schüler" && $project_data['submitted'] == "1" && $project_data['reviewed'] == "0") {
+                                                        echo '<div class="alert alert-danger" role="alert">
+                                                        <h4 class="alert-heading">Achtung!</h4>
+                                                        <p>Das Projekt wurde bereits zur Bewertung abgegeben und kann nicht mehr bearbeitet werden.</p>
+                                                        <hr>
+                                                        <p class="mb-0">Bitte wenden Sie sich an Ihren Lehrer, wenn Sie das Projekt noch einmal bearbeiten möchten.<br />
+                                                        Nach der Bewertung durch den Lehrer wird das Bearbeiten wieder freigegeben.</p>
+                                                        </div>';
+                                                    }
+                                                    if($getCurrentUserData['role'] != "Schüler" && $project_data['submitted'] == "1" && $project_data['reviewed'] == "0") {
+                                                        echo '<div class="alert alert-warning" role="alert">
+                                                        <h4 class="alert-heading">Achtung!</h4>
+                                                        <p>Das Projekt wurde zur Bewertung abgegeben.</p>
+                                                        <hr>
+                                                        <p class="mb-0">Das nachträgliche Ändern von Projekten durch den Lehrer ist aus Sicherheitsgründen nicht erlaubt. <br />(Speicherfunktion ist deaktiviert)</p>
+                                                        </div>';
+                                                    }
+                                                    ?>
                                                        <hr><br />
                                                        <div class="row">
                                                        
                                                            <pre><code class="language-python"><?php
                                                     $project_content = $project_data['project_content'];
-                                                    //Für jeden Eintrag in "components" wird ein Listenelement erstellt, mit dem Namen: {"identifier":"blank-html-starter","project_type":"html","locale":"en","name":"Neues Projekt","user_id":null,"components":[{"id":"e732f181-933f-4324-844a-c05cedd9c56c","name":"index","extension":"html","content":""},{"id":"b06d109f-71e4-4227-8bce-fb67a9599381","name":"styles","extension":"css","content":""}],"image_list":[]}
-
+                                                    
                                                     $project_content = json_decode(urldecode($project_content), true);
                                                     $components = $project_content['components'];
                                                     $image_list = $project_content['image_list'];

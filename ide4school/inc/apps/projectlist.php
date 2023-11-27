@@ -78,10 +78,10 @@ if (isset($data['createProject'])) {
 
 
     if($project_category == "website") {
-        $project_content = '{"identifier":"new","project_type":"html","locale":"en","name":"Neues Projekt","user_id":null,"components":[{"id":"e732f181-933f-4324-844a-c05cedd9c56c","name":"index","extension":"html","content":""},{"id":"b06d109f-71e4-4227-8bce-fb67a9599381","name":"styles","extension":"css","content":""}],"image_list":[]}';
+        $project_content = '{"identifier":"new","project_type":"html","locale":"en","name":"Neues Projekt","user_id":null,"components":[{"id":"e732f181-933f-4324-844a-c05cedd9c56c","name":"index","extension":"html","content":""},{"id":"b06d109f-71e4-4227-8bce-fb67a9599381","name":"styles","extension":"css","content":""}],"image_list":[], "to_review":false}';
     }
     else {
-        $project_content = '{"identifier":"new","project_type":"python","name":"Neues Projekt","locale":null,"components":[{"extension":"py","name":"main","content":"","default":true}],"image_list":[]}';
+        $project_content = '{"identifier":"new","project_type":"python","name":"Neues Projekt","locale":null,"components":[{"extension":"py","name":"main","content":"","default":true}],"image_list":[], "to_review":false}';
     }
     
 
@@ -460,12 +460,15 @@ if (isset($data['createProject'])) {
                                 }
                                 else {
                                 foreach($projects as $project) {
+                                    $project_id = json_decode(urldecode($project['project_content']), true)['identifier'];
+                                    $project_name = json_decode(urldecode($project['project_content']), true)['name'];
+
                                     echo    '<tr class="odd">
-                                   <td><a href="project&id=' . $project['id'] . '">' . $project['name'] . '</a></td>
+                                   <td><a href="project&id=' . $project_id . '">' . $project_name . '</a></td>
                                    <td>';  
                                     echo $project['description'];
                                    echo '</td>';
-                                   if($project['category'] == 'website') {
+                                   if($project['category'] == 'website' || $project['category'] == 'html') {
                                     echo '<td>Website</td>';
                                 }
                                 if($project['category'] == 'python') {
