@@ -170,7 +170,7 @@ if(isset($_POST['returnProject'])) {
 <script>
         function openEditor() {
             //Füge einen neuen localstorage item hinzu, key project und value ist der $project_data['project_content'], bei dem jedoch alle schrägstriche erhalten bleiben sollen (raw)
-            localStorage.setItem("project", `<?=$project_data['project_content']?>`);
+            localStorage.setItem("project", decodeURIComponent(`<?=$project_data['project_content']?>`));
             window.location.href = "/ide4school-ce";
         }
     </script>
@@ -718,7 +718,7 @@ if(isset($_POST['returnProject'])) {
                                                     $project_content = $project_data['project_content'];
                                                     //Für jeden Eintrag in "components" wird ein Listenelement erstellt, mit dem Namen: {"identifier":"blank-html-starter","project_type":"html","locale":"en","name":"Neues Projekt","user_id":null,"components":[{"id":"e732f181-933f-4324-844a-c05cedd9c56c","name":"index","extension":"html","content":""},{"id":"b06d109f-71e4-4227-8bce-fb67a9599381","name":"styles","extension":"css","content":""}],"image_list":[]}
 
-                                                    $project_content = json_decode($project_content, true);
+                                                    $project_content = json_decode(urldecode($project_content), true);
                                                     $components = $project_content['components'];
                                                     $image_list = $project_content['image_list'];
 

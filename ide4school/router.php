@@ -89,6 +89,10 @@ switch($page)
         include("inc/apps/ide.php");
         break;
 
+    case "clicksaverefresh":
+        include("inc/components/clicksave_refresh.php");
+        break;
+
     case "first-login":
         include("inc/apps/firstLogin.php");
         break;

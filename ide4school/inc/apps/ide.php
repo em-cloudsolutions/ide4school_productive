@@ -10,14 +10,15 @@ if(!isset($_SESSION['login_state']) && $db->getMFAMethodsFromUser($_SESSION['use
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_SERVER['CONTENT_TYPE'] == 'application/json' && isset($_GET['clicksave'])) {
     $project = file_get_contents('php://input');
     $project_decoded = json_decode($project, true);
+    $project_uriencoded = urlencode($project);
         $project_id = $project_decoded['identifier'];
         if($project_id == "new") {
-            $new_project_identifier = $db->createNewProjectThroughClicksave($project);
+            $new_project_identifier = $db->createNewProjectThroughClicksave($project_uriencoded);
             //Gebe sowohl den neuen Identifier als auch ein 200 OK an den xhr request zurück, damit ich diesen dort auswerten kann
             if($new_project_identifier != NULL) {
                 header('HTTP/1.1 200 OK');
                 //gebe ein json obkjekt mit dem identifier zurück
-                $reponse = array("identifier" => $new_project_identifier);
+                $reponse = array("identifier" => $new_project_identifier, "saveNew" => true);
                 echo json_encode($reponse);
             }
             else {
@@ -25,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_SERVER['CONTENT_TYPE'] == 'applica
             }
         }
         else {
-            if($db->updateProjectCode($project_id, $project)) {
+            if($db->updateProjectCode($project_id, $project_uriencoded)) {
                 header('HTTP/1.1 200 OK');
             }
             else {
@@ -37,9 +38,10 @@ elseif
     ($_SERVER['REQUEST_METHOD'] == 'POST' && $_SERVER['CONTENT_TYPE'] == 'application/json' && isset($_GET['autosave'])) {
         $project = file_get_contents('php://input');
         $project_decoded = json_decode($project, true);
+        $project_uriencoded = urlencode($project);
     $project_id = $project_decoded['identifier'];
     if($project_id != "new") {
-        if($db->updateProjectCode($project_id, $project)) {
+        if($db->updateProjectCode($project_id, $project_uriencoded)) {
             header('HTTP/1.1 200 OK');
         }
         else {

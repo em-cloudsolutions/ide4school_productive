@@ -2519,11 +2519,11 @@ class DB {
             $stmt->execute();
             $result = $stmt->fetch();
             $saved_encoded_project_content = $result['project_content'];
-            $saved_decoded_project_content = json_decode($saved_encoded_project_content, true);
+            $saved_decoded_project_content = json_decode(urldecode($saved_encoded_project_content), true);
             if($saved_decoded_project_content['identifier'] == "new") {
                 //ändere den JSON Code in project_contet so, dass "identifier" nun den Wert der ID hat
                 $saved_decoded_project_content['identifier'] = $result['id'];
-                $saved_encoded_project_content = json_encode($saved_decoded_project_content);
+                $saved_encoded_project_content = urlencode(json_encode($saved_decoded_project_content));
                 //Speichere den neuen JSON Code in der Datenbank
                 if(self::updateProjectCode($result['id'], $saved_encoded_project_content)) {
                     return true;
@@ -2552,7 +2552,7 @@ class DB {
 
     function createNewProjectThroughClicksave($project_content) {
         //Lege Project Parameter fest (lese aus $project_content im JSON sowohl den project_type, als auch den Namen aus und setzte visibility auf 1)
-        $decoded_project_content = json_decode($project_content, true);
+        $decoded_project_content = json_decode(urldecode($project_content), true);
         $project_name = $decoded_project_content['name'];
         $project_description = "Neues über Editor erstelltes Projekt.";
         $project_visibility = "private";
