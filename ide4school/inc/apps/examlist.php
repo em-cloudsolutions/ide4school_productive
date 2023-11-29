@@ -102,8 +102,8 @@ $exams = $db->getAllExams();
         <?php include('inc/components/header.php'); ?>
 
 
-    <!-- BEGIN: Main Menu-->
-    <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
+         <!-- BEGIN: Main Menu-->
+         <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="navbar-header">
             <ul class="nav navbar-nav flex-row">
                 <li class="nav-item me-auto"><a class="navbar-brand" href="dashboard"><span class="brand-logo">
@@ -160,7 +160,7 @@ $exams = $db->getAllExams();
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
                
-                <li class="nav-item "><a class="d-flex align-items-center" href="dashboard"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboard">Dashboard</span></a>
+                <li class="nav-item active"><a class="d-flex align-items-center" href="dashboard"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboard">Dashboard</span></a>
                 </li>
                 <li class=" navigation-header"><span data-i18n="Apps">Apps</span><i data-feather="more-horizontal"></i>
                 </li>
@@ -168,22 +168,10 @@ $exams = $db->getAllExams();
                 </li>
                 <li class="nav-item"><a class="d-flex align-items-center" href="projects"><i data-feather="layers"></i><span class="menu-title text-truncate" data-i18n="Projects">Projekte</span></a>
                 </li>
-                <li class="nav-item"><a class="d-flex align-items-center" href="struktogrammeditor"><i data-feather="layout"></i><span class="menu-title text-truncate" data-i18n="Struktogrammeditor">Struktogrammeditor</span></a>
+                <li class="nav-item"><a class="d-flex align-items-center" target="_blank" href="struktogrammeditor"><i data-feather="layout"></i><span class="menu-title text-truncate" data-i18n="Struktogrammeditor">Struktogrammeditor</span></a>
                     </li>
                 <?php
-                if($db->isGameFunktionEnabled()) {
-                    ?>
-                    <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="play-circle"></i><span class="menu-title text-truncate" data-i18n="Lernspiele">Lernspiele</span></a>
-                    <ul class="menu-content ">
-                        <li><a class="d-flex align-items-center" href="games"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Spieleübersicht">Spieleübersicht</span></a>
-                        </li>
-                        <li><a class="d-flex align-items-center" href="game_manager"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Session Manager">Session Manager</span></a>
-                        </li>
-                    </ul>
-                </li>
                 
-<?php  
-                }
                 if($db->isEmailFunktionEnabled()) {
                     echo '<li class=" nav-item"><a class="d-flex align-items-center" href="email"><i data-feather="mail"></i><span class="menu-title text-truncate" data-i18n="Direktnachrichten">Direktnachrichten</span></a>
                     </li>';
@@ -199,20 +187,32 @@ $exams = $db->getAllExams();
                     </li>';
                 }
 
-                if($db->isSubmissionFunktionEnabled()) {
-                    echo '<li class=" nav-item"><a class="d-flex align-items-center" href="submissions"><i data-feather="inbox"></i><span class="menu-title text-truncate" data-i18n="Submissions">Abgaben</span></a>
-                    </li>';
-                }
-                ?>
+                //if($db->isSubmissionFunktionEnabled()) {
+                 //   echo '<li class=" nav-item"><a class="d-flex align-items-center" href="submissions"><i data-feather="inbox"></i><span class="menu-title text-truncate" data-i18n="Submissions">Abgaben</span></a>
+                  //  </li>';
+                //}
                 
-                
-                
-                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="hard-drive"></i><span class="menu-title text-truncate" data-i18n="Files">Dateien</span></a>
+                if($db->isGameFunktionEnabled()) {
+                    ?>
+                    <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="play-circle"></i><span class="menu-title text-truncate" data-i18n="Lernspiele">Lernspiele</span></a>
                     <ul class="menu-content ">
-                        <li><a class="d-flex align-items-center" <?php if($getCurrentUserData['role'] == "Schüler") { echo ' href="disk&drive=my"'; } else { echo 'href="disk&drive=ad-users"'; } ?>><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="My folder"><?php if($getCurrentUserData['role'] == "Schüler") { echo 'Mein Ordner'; } else { echo 'Benutzerordner'; }?></span></a>
+                        <li><a class="d-flex align-items-center" href="games"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Spieleübersicht">Spieleübersicht</span></a>
                         </li>
-                        <li><a class="d-flex align-items-center" <?php if($getCurrentUserData['role'] == "Schüler") { echo ' href="disk&drive=class"'; } else { echo 'href="disk&drive=ad-classes"'; } ?>><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Class folder">Klassenordner</span></a>
+                        <li><a class="d-flex align-items-center" href="game_manager"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Session Manager">Session Manager</span></a>
                         </li>
+                    </ul>
+                </li>
+                
+<?php  
+                }
+                
+?>
+                <!-- <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='check-circle'></i></i><span class="menu-title text-truncate" data-i18n="Exam">Prüfungen</span></a>
+                    <ul class="menu-content ">
+                        <li><a class="d-flex align-items-center" <?php //if($getCurrentUserData['role'] == "Schüler") { echo ' href="exams"'; } else { echo 'href="exams"'; } ?>><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Exam timeline"><?php if($getCurrentUserData['role'] == "Schüler") { echo 'Geschriebene Prüfungen'; } else { echo 'Prüfungsübersicht'; }?></span></a>
+                        </li>
+                        <?php //if($getCurrentUserData['role'] != "Schüler") { echo '<li><a class="d-flex align-items-center" href="exam&state=createNewExam" ><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Class folder">Klassenordner</span></a></li>'; }
+                        ?>
                         <?php
                         if($getCurrentUserData['role'] != "Schüler") {
                             ?>
@@ -229,27 +229,7 @@ $exams = $db->getAllExams();
                         ?>
                     </ul>
                 </li>
-                <li class=" nav-item open"><a class="d-flex align-items-center" href="#"><i data-feather='check-circle'></i></i><span class="menu-title text-truncate" data-i18n="Exam">Prüfungen</span></a>
-                    <ul class="menu-content ">
-                        <li><a class="d-flex align-items-center nav-item active" <?php if($getCurrentUserData['role'] == "Schüler") { echo ' href="exams"'; } else { echo 'href="exams"'; } ?>><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Exam timeline"><?php if($getCurrentUserData['role'] == "Schüler") { echo 'Geschriebene Prüfungen'; } else { echo 'Prüfungsübersicht'; }?></span></a>
-                        </li>
-                        <?php if($getCurrentUserData['role'] != "Schüler") { echo '
-                        <li><a class="d-flex align-items-center" href="exam_library" ><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Exam library">Prüfungsvorlagen</span></a>
-                        </li>
-                        <li><a class="d-flex align-items-center" href="exam_creation_assistant" ><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Create exam">Prüfung erstellen</span></a>
-                        </li>'; }
-                        ?>
-                        <?php
-                        if($db->isSubmissionFunktionEnabled() && $getCurrentUserData['role'] != "Schüler") {
-                            ?>
-                            <li><a class="d-flex align-items-center nav-item" href="disk&drive=ad-submissions"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Submissions">Abgabeordner</span></a>
-                            </li>
-                        <?php
-                        }
-                        ?>
-                    </ul>
-                </li>
-
+                !-->
                 <?php
                         if($db->noStudent()) {
                            ?>

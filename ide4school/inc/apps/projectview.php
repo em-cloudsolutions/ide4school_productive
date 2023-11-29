@@ -90,7 +90,18 @@ if(isset($_POST['editName'])) {
     $db->editProjectName($_POST['project_edit_name_id'], $_POST['project_edit_name_new']);
     header("Location: project&id=$project_id");
 }
- 
+
+if(isset($_POST['markascompleted'])) {
+    $db->markProjectAsCompleted($_POST['markascompleted_id']);
+    header("Location: project&id=$project_id");
+}
+
+if(isset($_POST['markasuncompleted'])) {
+    $db->markProjectAsUncompleted($_POST['markasuncompleted_id']);
+    header("Location: project&id=$project_id");
+}
+
+
 
 
 
@@ -200,6 +211,18 @@ if($project_data['owner'] == $_SESSION['user_id'] && $project_data['submitted'] 
         }
     }
 
+    function markProjectAsCompletetd(project_id) {
+        if(confirm('Projekt als "Abgeschlossen" markieren?')) {
+            document.getElementById("markascompleted").submit();
+        }
+    }
+
+    function markProjectAsUncompletetd(project_id) {
+        if(confirm('Projekt als "In Bearbeitung" markieren?')) {
+            document.getElementById("markasuncompleted").submit();
+        }
+    }
+
 <?php
 }
 ?>
@@ -257,13 +280,25 @@ else {
             <input name="project_edit_name_id" type="text" hidden id="project_edit_name_id">
             <input name="project_edit_name_new" type="text" hidden id="project_edit_name_new">
             <input name="editName" type="text" hidden id="editName">
+        </form>
+
+        <form action="project&id=<?=$project_id?>" method="POST" id="markascompleted">
+            <input name="markascompleted" type="text" hidden id="markascompleted">
+            <input name="markascompleted_id" type="text" hidden id="markascompleted_id">
+        </form>
+
+        <form action="project&id=<?=$project_id?>" method="POST" id="markasuncompleted">
+            <input name="markasuncompleted" type="text" hidden id="markasuncompleted">
+            <input name="markasuncompleted_id" type="text" hidden id="markasuncompleted_id">
+        </form>
+
 
 
 <?php include('inc/components/header.php'); ?>
 
 
-            <!-- BEGIN: Main Menu-->
-            <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
+ <!-- BEGIN: Main Menu-->
+ <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="navbar-header">
             <ul class="nav navbar-nav flex-row">
                 <li class="nav-item me-auto"><a class="navbar-brand" href="dashboard"><span class="brand-logo">
@@ -326,23 +361,12 @@ else {
                 </li>
                 <li class="nav-item"><a data-bs-toggle="modal" data-bs-target="#createEnviromentModal" class="d-flex align-items-center"><i data-feather="edit-3"></i><span class="menu-title text-truncate" data-i18n="Development Enviroment">Programmieren</span></a>
                 </li>
-                <li class="nav-item active"><a class="d-flex align-items-center" href="projects"><i data-feather="layers"></i><span class="menu-title text-truncate" data-i18n="Projects">Projekte</span></a></li>
-                <li class="nav-item"><a class="d-flex align-items-center" href="struktogrammeditor"><i data-feather="layout"></i><span class="menu-title text-truncate" data-i18n="Struktogrammeditor">Struktogrammeditor</span></a>
+                <li class="nav-item active"><a class="d-flex align-items-center" href="projects"><i data-feather="layers"></i><span class="menu-title text-truncate" data-i18n="Projects">Projekte</span></a>
+                </li>
+                <li class="nav-item"><a class="d-flex align-items-center" target="_blank" href="struktogrammeditor"><i data-feather="layout"></i><span class="menu-title text-truncate" data-i18n="Struktogrammeditor">Struktogrammeditor</span></a>
                     </li>
                 <?php
-                if($db->isGameFunktionEnabled()) {
-                    ?>
-                    <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="play-circle"></i><span class="menu-title text-truncate" data-i18n="Lernspiele">Lernspiele</span></a>
-                    <ul class="menu-content ">
-                        <li><a class="d-flex align-items-center" href="games"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Spieleübersicht">Spieleübersicht</span></a>
-                        </li>
-                        <li><a class="d-flex align-items-center" href="game_manager"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Session Manager">Session Manager</span></a>
-                        </li>
-                    </ul>
-                </li>
                 
-<?php  
-                }
                 if($db->isEmailFunktionEnabled()) {
                     echo '<li class=" nav-item"><a class="d-flex align-items-center" href="email"><i data-feather="mail"></i><span class="menu-title text-truncate" data-i18n="Direktnachrichten">Direktnachrichten</span></a>
                     </li>';
@@ -358,20 +382,32 @@ else {
                     </li>';
                 }
 
-                if($db->isSubmissionFunktionEnabled()) {
-                    echo '<li class=" nav-item"><a class="d-flex align-items-center" href="submissions"><i data-feather="inbox"></i><span class="menu-title text-truncate" data-i18n="Submissions">Abgaben</span></a>
-                    </li>';
-                }
-                ?>
+                //if($db->isSubmissionFunktionEnabled()) {
+                 //   echo '<li class=" nav-item"><a class="d-flex align-items-center" href="submissions"><i data-feather="inbox"></i><span class="menu-title text-truncate" data-i18n="Submissions">Abgaben</span></a>
+                  //  </li>';
+                //}
                 
-                
-                
-                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="hard-drive"></i><span class="menu-title text-truncate" data-i18n="Files">Dateien</span></a>
+                if($db->isGameFunktionEnabled()) {
+                    ?>
+                    <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="play-circle"></i><span class="menu-title text-truncate" data-i18n="Lernspiele">Lernspiele</span></a>
                     <ul class="menu-content ">
-                        <li><a class="d-flex align-items-center" <?php if($getCurrentUserData['role'] == "Schüler") { echo ' href="disk&drive=my"'; } else { echo 'href="disk&drive=ad-users"'; } ?>><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="My folder"><?php if($getCurrentUserData['role'] == "Schüler") { echo 'Mein Ordner'; } else { echo 'Benutzerordner'; }?></span></a>
+                        <li><a class="d-flex align-items-center" href="games"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Spieleübersicht">Spieleübersicht</span></a>
                         </li>
-                        <li><a class="d-flex align-items-center" <?php if($getCurrentUserData['role'] == "Schüler") { echo ' href="disk&drive=class"'; } else { echo 'href="disk&drive=ad-classes"'; } ?>><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Class folder">Klassenordner</span></a>
+                        <li><a class="d-flex align-items-center" href="game_manager"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Session Manager">Session Manager</span></a>
                         </li>
+                    </ul>
+                </li>
+                
+<?php  
+                }
+                
+?>
+                <!-- <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='check-circle'></i></i><span class="menu-title text-truncate" data-i18n="Exam">Prüfungen</span></a>
+                    <ul class="menu-content ">
+                        <li><a class="d-flex align-items-center" <?php //if($getCurrentUserData['role'] == "Schüler") { echo ' href="exams"'; } else { echo 'href="exams"'; } ?>><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Exam timeline"><?php if($getCurrentUserData['role'] == "Schüler") { echo 'Geschriebene Prüfungen'; } else { echo 'Prüfungsübersicht'; }?></span></a>
+                        </li>
+                        <?php //if($getCurrentUserData['role'] != "Schüler") { echo '<li><a class="d-flex align-items-center" href="exam&state=createNewExam" ><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Class folder">Klassenordner</span></a></li>'; }
+                        ?>
                         <?php
                         if($getCurrentUserData['role'] != "Schüler") {
                             ?>
@@ -388,12 +424,12 @@ else {
                         ?>
                     </ul>
                 </li>
-
+                !-->
                 <?php
                         if($db->noStudent()) {
                            ?>
                 <li class=" navigation-header"><span data-i18n="Management">Verwaltung</span><i data-feather="more-horizontal"></i>
-
+                
                 <li class=" nav-item"><a class="d-flex align-items-center" href="users"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="Users">Benutzer</span></a>
                 </li>
                 <li class=" nav-item"><a class="d-flex align-items-center" href="classes"><i data-feather="users"></i><span class="menu-title text-truncate" data-i18n="Classes">Klassen</span></a>
@@ -504,6 +540,16 @@ else {
                                                 }
                                                 ?>
                                             </li>
+                                            <li class="mb-75">
+                                                <span class="fw-bolder me-25">Status:</span>
+                                                <?php
+                                                if($project_data['completed'] == "1") {
+                                                    echo '<span class="badge bg-light-success">Abgeschlossen</span>';
+                                                } else {
+                                                    echo '<span class="badge bg-light-warning">In Bearbeitung</span>';
+                                                }
+                                                ?>
+                                            </li>
                                             <?php
                                             if($getCurrentUserData['role'] == "Schüler" && $project_data['owner'] == $_SESSION['user_id'] && $project_data['submitted'] == "0") {
                                                 ?>
@@ -524,6 +570,21 @@ else {
                                             
     
                                         </ul>
+                                        <?php
+                                            if($project_data['completed'] == "0" && $project_data['owner'] == $_SESSION['user_id']) {
+                                                ?>
+                                                <button type="button" OnClick="markProjectAsCompletetd(<?=$project_id?>)" class="btn btn-primary me-1">
+                                                Projekt als "Abgeschlossen" markieren
+                                        </button><br /><br />
+                                                <?php
+                                            } elseif($project_data['completed'] == "1" && $project_data['owner'] == $_SESSION['user_id']) {
+                                                ?>
+                                                <button type="button" OnClick="markProjectAsUncompletetd(<?=$project_id?>)" class="btn btn-primary me-1">
+                                                Projekt als "In Bearbeitung" markieren
+                                        </button><br /><br />
+                                                <?php
+                                            }
+                                            ?>
                                         <?php
                                             if($project_data['owner'] == $_SESSION['user_id']  && $project_data['submitted'] == "0") {
                                                 ?>
@@ -643,6 +704,7 @@ else {
                                         </ul>
                                         </div> </div> </div> </div>
                                         <div class="d-flex justify-content-center pt-2">
+                                            
                                             <?php
                                             if($project_data['owner'] == $_SESSION['user_id'] && $getCurrentUserData['role'] == "Schüler" && $project_data['submitted'] == "1") {
                                                 ?>
@@ -743,6 +805,8 @@ else {
                                                 <?php
                                             }
                                             ?>
+
+
                                         </div>
 
                             </div>
@@ -753,6 +817,7 @@ else {
                                 
                                         }
                                         ?>
+                                        
                                     </div>
                                     
                                 </div>

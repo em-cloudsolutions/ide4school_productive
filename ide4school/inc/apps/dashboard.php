@@ -171,22 +171,10 @@ if($db->shouldBeStudentInExam()) {
                 </li>
                 <li class="nav-item"><a class="d-flex align-items-center" href="projects"><i data-feather="layers"></i><span class="menu-title text-truncate" data-i18n="Projects">Projekte</span></a>
                 </li>
-                <li class="nav-item"><a class="d-flex align-items-center" href="struktogrammeditor"><i data-feather="layout"></i><span class="menu-title text-truncate" data-i18n="Struktogrammeditor">Struktogrammeditor</span></a>
+                <li class="nav-item"><a class="d-flex align-items-center" target="_blank" href="struktogrammeditor"><i data-feather="layout"></i><span class="menu-title text-truncate" data-i18n="Struktogrammeditor">Struktogrammeditor</span></a>
                     </li>
                 <?php
-                if($db->isGameFunktionEnabled()) {
-                    ?>
-                    <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="play-circle"></i><span class="menu-title text-truncate" data-i18n="Lernspiele">Lernspiele</span></a>
-                    <ul class="menu-content ">
-                        <li><a class="d-flex align-items-center" href="games"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Spieleübersicht">Spieleübersicht</span></a>
-                        </li>
-                        <li><a class="d-flex align-items-center" href="game_manager"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Session Manager">Session Manager</span></a>
-                        </li>
-                    </ul>
-                </li>
                 
-<?php  
-                }
                 if($db->isEmailFunktionEnabled()) {
                     echo '<li class=" nav-item"><a class="d-flex align-items-center" href="email"><i data-feather="mail"></i><span class="menu-title text-truncate" data-i18n="Direktnachrichten">Direktnachrichten</span></a>
                     </li>';
@@ -202,42 +190,31 @@ if($db->shouldBeStudentInExam()) {
                     </li>';
                 }
 
-                if($db->isSubmissionFunktionEnabled()) {
-                    echo '<li class=" nav-item"><a class="d-flex align-items-center" href="submissions"><i data-feather="inbox"></i><span class="menu-title text-truncate" data-i18n="Submissions">Abgaben</span></a>
-                    </li>';
+                //if($db->isSubmissionFunktionEnabled()) {
+                 //   echo '<li class=" nav-item"><a class="d-flex align-items-center" href="submissions"><i data-feather="inbox"></i><span class="menu-title text-truncate" data-i18n="Submissions">Abgaben</span></a>
+                  //  </li>';
+                //}
+                
+                if($db->isGameFunktionEnabled()) {
+                    ?>
+                    <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="play-circle"></i><span class="menu-title text-truncate" data-i18n="Lernspiele">Lernspiele</span></a>
+                    <ul class="menu-content ">
+                        <li><a class="d-flex align-items-center" href="games"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Spieleübersicht">Spieleübersicht</span></a>
+                        </li>
+                        <li><a class="d-flex align-items-center" href="game_manager"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Session Manager">Session Manager</span></a>
+                        </li>
+                    </ul>
+                </li>
+                
+<?php  
                 }
-                ?>
                 
-                
-                
-                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="hard-drive"></i><span class="menu-title text-truncate" data-i18n="Files">Dateien</span></a>
+?>
+                <!-- <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='check-circle'></i></i><span class="menu-title text-truncate" data-i18n="Exam">Prüfungen</span></a>
                     <ul class="menu-content ">
-                        <li><a class="d-flex align-items-center" <?php if($getCurrentUserData['role'] == "Schüler") { echo ' href="disk&drive=my"'; } else { echo 'href="disk&drive=ad-users"'; } ?>><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="My folder"><?php if($getCurrentUserData['role'] == "Schüler") { echo 'Mein Ordner'; } else { echo 'Benutzerordner'; }?></span></a>
+                        <li><a class="d-flex align-items-center" <?php //if($getCurrentUserData['role'] == "Schüler") { echo ' href="exams"'; } else { echo 'href="exams"'; } ?>><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Exam timeline"><?php if($getCurrentUserData['role'] == "Schüler") { echo 'Geschriebene Prüfungen'; } else { echo 'Prüfungsübersicht'; }?></span></a>
                         </li>
-                        <li><a class="d-flex align-items-center" <?php if($getCurrentUserData['role'] == "Schüler") { echo ' href="disk&drive=class"'; } else { echo 'href="disk&drive=ad-classes"'; } ?>><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Class folder">Klassenordner</span></a>
-                        </li>
-                        <?php
-                        if($getCurrentUserData['role'] != "Schüler") {
-                            ?>
-                            <li><a class="d-flex align-items-center" href="fileshare"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Dateifreigabe">Dateifreigabe</span></a>
-                            </li>
-                        <?php
-                        }
-                        if($db->isSubmissionFunktionEnabled() && $getCurrentUserData['role'] != "Schüler") {
-                            ?>
-                            <li><a class="d-flex align-items-center" href="disk&drive=ad-submissions"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Submissions">Abgabeordner</span></a>
-                            </li>
-                        <?php
-                        }
-                        ?>
-                    </ul>
-                </li>
-                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='check-circle'></i></i><span class="menu-title text-truncate" data-i18n="Exam">Prüfungen</span></a>
-                    <ul class="menu-content ">
-                        <li><a class="d-flex align-items-center" <?php if($getCurrentUserData['role'] == "Schüler") { echo ' href="exams"'; } else { echo 'href="exams"'; } ?>><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Exam timeline"><?php if($getCurrentUserData['role'] == "Schüler") { echo 'Geschriebene Prüfungen'; } else { echo 'Prüfungsübersicht'; }?></span></a>
-                        </li>
-                        <?php if($getCurrentUserData['role'] != "Schüler") { echo '<li><a class="d-flex align-items-center" href="exam&state=createNewExam" ><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Class folder">Klassenordner</span></a>
-                        </li>'; }
+                        <?php //if($getCurrentUserData['role'] != "Schüler") { echo '<li><a class="d-flex align-items-center" href="exam&state=createNewExam" ><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Class folder">Klassenordner</span></a></li>'; }
                         ?>
                         <?php
                         if($getCurrentUserData['role'] != "Schüler") {
@@ -255,7 +232,7 @@ if($db->shouldBeStudentInExam()) {
                         ?>
                     </ul>
                 </li>
-
+                !-->
                 <?php
                         if($db->noStudent()) {
                            ?>
@@ -305,7 +282,7 @@ if($db->shouldBeStudentInExam()) {
     <!-- END: Main Menu-->
     <?php
 if($getCurrentUserData['role'] == "Schüler") {
-    $submissions = $db->getUserSubmissions4Dashboard();
+    $projects = $db->getAllUnReviewedProjectsOfMyAssignedClasses4Dashboard();
     ?>
 
     <!-- BEGIN: Content-->
@@ -399,20 +376,24 @@ if($getCurrentUserData['role'] == "Schüler") {
                                 <div class="card-body">
                                     <ul class="timeline ms-50">
                                         <?php
-                                            if($submissions == NULL) {
+                                            if($projects == NULL) {
                                             echo '<li class="timeline-item">
                                                     <span class="timeline-point timeline-point-indicator"></span>
                                                     <div class="timeline-event">
-                                                        <h6>Keine offenen Arbeiten vorhanden.</h6>
+                                                        <h6>Keine Projekte zum Bearbeiten vorhanden.</h6>
                                                     </div>
                                                 </li>';
                                         }
-                                         foreach($submissions as $submission) {
+                                         foreach($projects as $project) {
+                                            $project_name = json_decode(urldecode($project['project_content']), true)['name'];
                                             echo '<li class="timeline-item">
                                             <span class="timeline-point timeline-point-indicator"></span>
                                             <div class="timeline-event">
-                                                <h6>' . $submission['name'] . '</h6>
-                                                <p> Abgegeben am: <b>' . $submission['date'] . '</b></p>
+                                                <h6><b>' . $project_name . '</b></h6>
+                                                <p>Abgegeben von: <b>'; $id = $project['owner'];
+                                                $owner = $db->getFullNameViaID($id);
+                                                echo $owner; echo '</b></p>
+                                                <p> Abgegeben am: <b>' . $project['submitted_at'] . '</b></p>
                                             </div>
                                         </li>';
                                         }
@@ -438,7 +419,7 @@ if($getCurrentUserData['role'] == "Schüler") {
 <?php
 
 if($getCurrentUserData['role'] != "Schüler") {
-    $submissions = $db->getAllInboxSubmissions4Dashboard();
+    $projects = $db->getAllUnReviewedProjectsOfMyAssignedClasses4Dashboard();
     ?>
 
     <!-- BEGIN: Content-->
@@ -469,10 +450,10 @@ if($getCurrentUserData['role'] != "Schüler") {
                                             willkommen im Benutzerportal von ide4school. <br />
                                             <?php
                                             if($getCurrentUserData['role'] == "Lehrer") {
-                                                echo 'Verwalte deine Klassen, deine Schüler & die Arbeiten deiner Schüler bequem über unsere Benutzeroberfläche.';
+                                                echo 'Verwalte deine Klassen, deine Schüler & die Projekte deiner Schüler bequem über die Benutzeroberfläche.';
                                             }
                                             if($getCurrentUserData['role'] == "Administrator") {
-                                                echo 'Verwalte deine Institution und alles was Schüler und Lehrer auf ide4school tun bequem über unsere Benutzeroberfläche.';
+                                                echo 'Verwalte deine Institution und alles was Schüler und Lehrer auf ide4school tun bequem über die Benutzeroberfläche.';
                                             }
                                             ?>
                                         </p>
@@ -592,29 +573,30 @@ if($getCurrentUserData['role'] != "Schüler") {
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
                                         <i data-feather="list" class="user-timeline-title-icon"></i>
-                                        <h4 class="card-title">Noch nicht korrigierte Arbeiten</h4>
+                                        <h4 class="card-title">Noch nicht bewertete Projekte</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     <ul class="timeline ms-50">
                                         <?php
-                                            if($submissions == NULL) {
+                                            if($projects == NULL) {
                                             echo '<li class="timeline-item">
                                                     <span class="timeline-point timeline-point-indicator"></span>
                                                     <div class="timeline-event">
-                                                        <h6>Keine offenen Arbeiten vorhanden.</h6>
+                                                        <h6>Keine Projekte zum Bearbeiten vorhanden.</h6>
                                                     </div>
                                                 </li>';
                                         }
-                                         foreach($submissions as $submission) {
+                                         foreach($projects as $project) {
+                                            $project_name = json_decode(urldecode($project['project_content']), true)['name'];
                                             echo '<li class="timeline-item">
                                             <span class="timeline-point timeline-point-indicator"></span>
                                             <div class="timeline-event">
-                                                <h6><b>' . $submission['name'] . '</b></h6>
-                                                <p>Abgegeben von: <b>'; $id = $submission['owner'];
+                                                <h6><b>' . $project_name . '</b></h6>
+                                                <p>Abgegeben von: <b>'; $id = $project['owner'];
                                                 $owner = $db->getFullNameViaID($id);
                                                 echo $owner; echo '</b></p>
-                                                <p> Abgegeben am: <b>' . $submission['date'] . '</b></p>
+                                                <p> Abgegeben am: <b>' . $project['submitted_at'] . '</b></p>
                                             </div>
                                         </li>';
                                         }

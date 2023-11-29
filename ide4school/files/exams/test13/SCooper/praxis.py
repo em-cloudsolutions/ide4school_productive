@@ -1,1 +1,0 @@
-print("Wichtig und richtig.")

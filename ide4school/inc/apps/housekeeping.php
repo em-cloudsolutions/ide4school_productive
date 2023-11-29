@@ -27,35 +27,6 @@ if(isset($_POST['updateSessionClass'])) {
 // SESSION CLASS MANAGMENT - END
 
 
-if(isset($_POST['clearAllUserFolders'])) {
-    $files = glob('files/users/*'); // get all file names
-    foreach($files as $file){ // iterate files
-        if(is_dir($file)) {
-            array_map('unlink', glob("$file/*.*"));
-        }
-    }
-    header("Location: housekeeping");
-}
-
-if(isset($_POST['clearAllClassFolders'])) {
-    $files = glob('files/classes/*'); // get all file names
-    foreach($files as $file){ // iterate files
-        if(is_dir($file)) {
-            array_map('unlink', glob("$file/*.*"));
-        }
-    }
-}
-
-if(isset($_POST['clearAllSubmissions'])) {
-    $files = glob('files/submissions/*'); // get all file names
-    foreach($files as $file){ // iterate files
-        if(is_dir($file)) {
-            array_map('unlink', glob("$file/*.*"));
-        }
-    }
-    $db->clearAllSubmissions();
-}
-
 if(isset($_POST['clearAllTodos'])) {
     $db->clearAllTodos();
 }
@@ -135,18 +106,7 @@ if(isset($_POST['clearAllMails'])) {
 
 <script>
 
-    function clearAllUserFolders(){
-        console.log("clearAllUserFolders");
-        document.getElementById("clearAllUserFoldersForm").submit();
-    }
-
-    function clearAllClassFolders(){
-        document.getElementById("clearAllClassFoldersForm").submit();
-    }
-
-    function clearAllSubmissions(){
-        document.getElementById("clearAllSubmissionsForm").submit();
-    }
+   
 
     function clearAllToDos(){
         document.getElementById("clearAllTodosForm").submit();
@@ -170,17 +130,6 @@ if(isset($_POST['clearAllMails'])) {
 
 </script>
 <!-- Session class update hidden form -->
-        <form action="housekeeping" method="POST" id="clearAllUserFoldersForm">
-            <input name="clearAllUserFolders" type="text" hidden id="clearAllUserFolders">
-        </form>
-
-        <form action="housekeeping" method="POST" id="clearAllClassFoldersForm">
-            <input name="clearAllClassFolders" type="text" hidden id="clearAllClassFolders">
-        </form>
-
-        <form action="housekeeping" method="POST" id="clearAllSubmissionsForm">
-            <input name="clearAllSubmissions" type="text" hidden id="clearAllSubmissions">
-        </form>
 
         <form action="housekeeping" method="POST" id="clearAllTodosForm">
             <input name="clearAllTodos" type="text" hidden id="clearAllTodos">
@@ -209,8 +158,8 @@ if(isset($_POST['clearAllMails'])) {
         <?php include('inc/components/header.php'); ?>
 
 
-         <!-- BEGIN: Main Menu-->
-         <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
+     <!-- BEGIN: Main Menu-->
+     <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="navbar-header">
             <ul class="nav navbar-nav flex-row">
                 <li class="nav-item me-auto"><a class="navbar-brand" href="dashboard"><span class="brand-logo">
@@ -273,22 +222,12 @@ if(isset($_POST['clearAllMails'])) {
                 </li>
                 <li class="nav-item"><a data-bs-toggle="modal" data-bs-target="#createEnviromentModal" class="d-flex align-items-center"><i data-feather="edit-3"></i><span class="menu-title text-truncate" data-i18n="Development Enviroment">Programmieren</span></a>
                 </li>
-                <li class="nav-item"><a class="d-flex align-items-center" href="struktogrammeditor"><i data-feather="layout"></i><span class="menu-title text-truncate" data-i18n="Struktogrammeditor">Struktogrammeditor</span></a>
+                <li class="nav-item"><a class="d-flex align-items-center" href="projects"><i data-feather="layers"></i><span class="menu-title text-truncate" data-i18n="Projects">Projekte</span></a>
+                </li>
+                <li class="nav-item"><a class="d-flex align-items-center" target="_blank" href="struktogrammeditor"><i data-feather="layout"></i><span class="menu-title text-truncate" data-i18n="Struktogrammeditor">Struktogrammeditor</span></a>
                     </li>
                 <?php
-                if($db->isGameFunktionEnabled()) {
-                    ?>
-                    <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="play-circle"></i><span class="menu-title text-truncate" data-i18n="Lernspiele">Lernspiele</span></a>
-                    <ul class="menu-content ">
-                        <li><a class="d-flex align-items-center" href="games"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Spieleübersicht">Spieleübersicht</span></a>
-                        </li>
-                        <li><a class="d-flex align-items-center" href="game_manager"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Session Manager">Session Manager</span></a>
-                        </li>
-                    </ul>
-                </li>
                 
-<?php  
-                }
                 if($db->isEmailFunktionEnabled()) {
                     echo '<li class=" nav-item"><a class="d-flex align-items-center" href="email"><i data-feather="mail"></i><span class="menu-title text-truncate" data-i18n="Direktnachrichten">Direktnachrichten</span></a>
                     </li>';
@@ -304,20 +243,32 @@ if(isset($_POST['clearAllMails'])) {
                     </li>';
                 }
 
-                if($db->isSubmissionFunktionEnabled()) {
-                    echo '<li class=" nav-item"><a class="d-flex align-items-center" href="submissions"><i data-feather="inbox"></i><span class="menu-title text-truncate" data-i18n="Submissions">Abgaben</span></a>
-                    </li>';
-                }
-                ?>
+                //if($db->isSubmissionFunktionEnabled()) {
+                 //   echo '<li class=" nav-item"><a class="d-flex align-items-center" href="submissions"><i data-feather="inbox"></i><span class="menu-title text-truncate" data-i18n="Submissions">Abgaben</span></a>
+                  //  </li>';
+                //}
                 
-                
-                
-                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="hard-drive"></i><span class="menu-title text-truncate" data-i18n="Files">Dateien</span></a>
+                if($db->isGameFunktionEnabled()) {
+                    ?>
+                    <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="play-circle"></i><span class="menu-title text-truncate" data-i18n="Lernspiele">Lernspiele</span></a>
                     <ul class="menu-content ">
-                        <li><a class="d-flex align-items-center" <?php if($getCurrentUserData['role'] == "Schüler") { echo ' href="disk&drive=my"'; } else { echo 'href="disk&drive=ad-users"'; } ?>><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="My folder"><?php if($getCurrentUserData['role'] == "Schüler") { echo 'Mein Ordner'; } else { echo 'Benutzerordner'; }?></span></a>
+                        <li><a class="d-flex align-items-center" href="games"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Spieleübersicht">Spieleübersicht</span></a>
                         </li>
-                        <li><a class="d-flex align-items-center" <?php if($getCurrentUserData['role'] == "Schüler") { echo ' href="disk&drive=class"'; } else { echo 'href="disk&drive=ad-classes"'; } ?>><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Class folder">Klassenordner</span></a>
+                        <li><a class="d-flex align-items-center" href="game_manager"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Session Manager">Session Manager</span></a>
                         </li>
+                    </ul>
+                </li>
+                
+<?php  
+                }
+                
+?>
+                <!-- <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='check-circle'></i></i><span class="menu-title text-truncate" data-i18n="Exam">Prüfungen</span></a>
+                    <ul class="menu-content ">
+                        <li><a class="d-flex align-items-center" <?php //if($getCurrentUserData['role'] == "Schüler") { echo ' href="exams"'; } else { echo 'href="exams"'; } ?>><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Exam timeline"><?php if($getCurrentUserData['role'] == "Schüler") { echo 'Geschriebene Prüfungen'; } else { echo 'Prüfungsübersicht'; }?></span></a>
+                        </li>
+                        <?php //if($getCurrentUserData['role'] != "Schüler") { echo '<li><a class="d-flex align-items-center" href="exam&state=createNewExam" ><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Class folder">Klassenordner</span></a></li>'; }
+                        ?>
                         <?php
                         if($getCurrentUserData['role'] != "Schüler") {
                             ?>
@@ -334,12 +285,12 @@ if(isset($_POST['clearAllMails'])) {
                         ?>
                     </ul>
                 </li>
-
+                !-->
                 <?php
                         if($db->noStudent()) {
                            ?>
                 <li class=" navigation-header"><span data-i18n="Management">Verwaltung</span><i data-feather="more-horizontal"></i>
-
+                
                 <li class=" nav-item"><a class="d-flex align-items-center" href="users"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="Users">Benutzer</span></a>
                 </li>
                 <li class=" nav-item"><a class="d-flex align-items-center" href="classes"><i data-feather="users"></i><span class="menu-title text-truncate" data-i18n="Classes">Klassen</span></a>
@@ -370,14 +321,14 @@ if(isset($_POST['clearAllMails'])) {
 
                 <li class=" nav-item"><a class="d-flex align-items-center" href="logs"><i data-feather="server"></i><span class="menu-title text-truncate" data-i18n="Logs">Logs</span></a>
          </li>
-                <li class=" nav-item "><a class="d-flex align-items-center" href="settings"><i data-feather="settings"></i><span class="menu-title text-truncate" data-i18n="Settings">Einstellungen</span></a>
+                <li class=" nav-item"><a class="d-flex align-items-center" href="settings"><i data-feather="settings"></i><span class="menu-title text-truncate" data-i18n="Settings">Einstellungen</span></a>
                 </li>
 <?php
                         }
                         ?>
                 
                
-               
+
             </ul>
         </div>
     </div>
@@ -416,39 +367,7 @@ if(isset($_POST['clearAllMails'])) {
                                     
                                     
                                    
-                                        <div class="mb-1">
-                                            <h5>Dateien aus Benutzer-Ordnern löschen</h5>
-                                            <span>Mit einem Klick auf diesen Button können Sie ALLE Dateien aus sämtlichen Benutzerordner löschen.</span>
-                                            <br />
-                                            <span style="color: red;">Diese Aktion kann nicht rückgängig gemacht werden!</span>
-                                            </div>
-                                                                            
-                                        <button OnClick="clearAllUserFolders()" class="btn btn-primary me-1 mt-1" >
-                                            Benutzerordner leeren
-                                        </button>
-                                        <br /><br /><hr><br /><br />
-                                        <div class="mb-1">
-                                            <h5>Dateien aus Klassen-Ordner löschen</h5>
-                                            <span>Mit einem Klick auf diesen Button können Sie ALLE Dateien aus sämtlichen Klassenordnern löschen.</span>
-                                            <br />
-                                            <span style="color: red;">Diese Aktion kann nicht rückgängig gemacht werden!</span>
-                                            </div>
-                                                                            
-                                        <button OnClick="clearAllClassFolders()" class="btn btn-primary me-1 mt-1" >
-                                            Klassenordner leeren
-                                        </button>
-                                        <br /><br /><hr><br /><br />
-                                        <div class="mb-1">
-                                            <h5>Dateien aus Abgabe-Ordner löschen</h5>
-                                            <span>Mit einem Klick auf diesen Button können Sie ALLE Dateien aus sämtlichen Abgabeordnern löschen.</span>
-                                            <br />
-                                            <span style="color: red;">Diese Aktion kann nicht rückgängig gemacht werden!</span>
-                                            </div>
-                                                                            
-                                        <button OnClick="clearAllSubmissions()" class="btn btn-primary me-1 mt-1" >
-                                            Abgabeordner leeren
-                                        </button>
-                                        <br /><br /><hr><br /><br />
+                                        
                                         <div class="mb-1">
                                             <h5>ToDo's löschen</h5>
                                             <span>Mit einem Klick auf diesen Button können Sie ALLE ToDo's aus sämtlichen Klassen löschen.</span>

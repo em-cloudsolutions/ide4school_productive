@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 28. Nov 2023 um 00:15
+-- Erstellungszeit: 29. Nov 2023 um 23:26
 -- Server-Version: 10.4.27-MariaDB
 -- PHP-Version: 8.2.0
 
@@ -55,12 +55,7 @@ CREATE TABLE `assignments` (
 --
 
 INSERT INTO `assignments` (`id`, `teacher`, `class`, `access`) VALUES
-(148, 'SCooper', 'Informatik Rommel 2024', 1),
-(149, 'SCooper', 'Lehrer', 1),
-(150, '753', 'Informatik Rommel 2024', 1),
-(151, '753', 'Lehrer', 1),
-(152, '756', 'Testklasse XY', 1),
-(153, '753', 'Testklasse XY', 1);
+(151, '753', 'Lehrer', 1);
 
 -- --------------------------------------------------------
 
@@ -81,78 +76,7 @@ CREATE TABLE `classes` (
 --
 
 INSERT INTO `classes` (`id`, `name`, `description`, `focus_mode`, `class_dir`) VALUES
-(13, 'Informatik Rommel 2024', 'Informatikgruppe Herr Rommel - Abijahrgang 2024', 0, 'files/classes/Informatik_Rommel_2024'),
-(14, 'Lehrer', '', 0, 'files/classes/Lehrer'),
-(15, 'Testklasse XY', 'fef', 0, 'files/classes/Testklasse_XY');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `compiler_langs`
---
-
-CREATE TABLE `compiler_langs` (
-  `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `language_id` int(11) NOT NULL,
-  `mode` varchar(50) NOT NULL,
-  `status` int(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Daten für Tabelle `compiler_langs`
---
-
-INSERT INTO `compiler_langs` (`id`, `name`, `language_id`, `mode`, `status`) VALUES
-(1, 'Bash (5.0.0)', 46, 'shell', 0),
-(2, 'C (Clang 7.0.1)', 75, 'c', 0),
-(3, 'C (Clang 9.0.1)', 1013, 'c', 0),
-(4, 'C (Clang 10.0.1)', 1001, 'c', 0),
-(5, 'C (GCC 7.4.0)', 48, 'c', 0),
-(6, 'C (GCC 8.3.0)', 49, 'c', 0),
-(7, 'C (GCC 9.2.0)', 50, 'c', 1),
-(8, 'C# (Mono 6.6.0.161)', 51, 'csharp', 0),
-(9, 'C# (Mono 6.10.0.104)', 1022, 'csharp', 0),
-(10, 'C# (.NET Core SDK 3.1.302)', 1021, 'csharp', 0),
-(11, 'C# Test (.NET Core SDK 3.1.302, NUnit 3.12.0)', 1023, 'csharp', 0),
-(12, 'C++ (Clang 7.0.1)', 76, 'cpp', 0),
-(13, 'C++ (Clang 9.0.1)', 1014, 'cpp', 0),
-(14, 'C++ (Clang 10.0.1)', 1002, 'cpp', 0),
-(15, 'C++ (GCC 7.4.0)', 52, 'cpp', 0),
-(16, 'C++ (GCC 8.3.0)', 53, 'cpp', 0),
-(17, 'C++ (GCC 9.2.0)', 54, 'cpp', 1),
-(18, 'C++ Test (Clang 10.0.1, Google Test 1.8.1)', 1015, 'cpp', 0),
-(19, 'C++ Test (GCC 8.4.0, Google Test 1.8.1)', 1012, 'cpp', 0),
-(20, 'C3 (latest)', 1003, 'c', 0),
-(21, 'Clojure (1.10.1)', 86, 'clojure', 0),
-(22, 'Executable', 44, 'plaintext', 0),
-(23, 'F# (.NET Core SDK 3.1.202)', 87, 'fsharp', 0),
-(24, 'F# (.NET Core SDK 3.1.302)', 1024, 'fsharp', 0),
-(25, 'Go (1.13.5)', 60, 'go', 0),
-(26, 'Java (OpenJDK 13.0.1)', 62, 'java', 0),
-(27, 'Java (OpenJDK 14.0.1)', 1004, 'java', 1),
-(28, 'Java Test (OpenJDK 14.0.1, JUnit Platform Console Standalone 1.6.2)', 1005, 'java', 0),
-(29, 'JavaScript (Node.js 12.14.0)', 63, 'javascript', 1),
-(30, 'Kotlin (1.3.70)', 78, 'kotlin', 0),
-(31, 'Lua (5.3.5)', 64, 'lua', 0),
-(32, 'MPI (OpenRTE 3.1.3) with C (GCC 8.3.0)', 1006, 'c', 0),
-(33, 'MPI (OpenRTE 3.1.3) with C++ (GCC 8.3.0)', 1007, 'cpp', 0),
-(34, 'MPI (OpenRTE 3.1.3) with Python (3.7.3)', 1008, 'python', 0),
-(35, 'Nim (stable)', 1009, 'python', 0),
-(36, 'Objective-C (Clang 7.0.1)', 79, 'objective-c', 0),
-(37, 'Pascal (FPC 3.0.4)', 67, 'pascal', 0),
-(38, 'Perl (5.28.1)', 85, 'perl', 0),
-(39, 'PHP (7.4.1)', 68, 'php', 0),
-(40, 'Plain Text', 43, 'plaintext', 0),
-(41, 'Python (2.7.17)', 70, 'python', 0),
-(42, 'Python (3.8.1)', 71, 'python', 1),
-(43, 'Python for ML (3.7.3)', 1010, 'python', 0),
-(44, 'R (4.0.0)', 80, 'r', 0),
-(45, 'Ruby (2.7.0)', 72, 'ruby', 0),
-(46, 'Rust (1.40.0)', 73, 'rust', 0),
-(47, 'Swift (5.2.3)', 83, 'swift', 0),
-(48, 'TypeScript (3.7.4)', 74, 'typescript', 0),
-(49, 'Visual Basic.Net (vbnc 0.0.0.5943)', 84, 'vb', 0);
+(14, 'Lehrer', '', 0, 'files/classes/Lehrer');
 
 -- --------------------------------------------------------
 
@@ -272,23 +196,8 @@ INSERT INTO `features` (`id`, `feature_name`, `short`, `feature_description`, `f
 (1, 'Mitteilungs Funktion', 'mit_funk', 'Ermöglicht es Lehrern Mitteilungen an eine Klasse zu versenden', 0, 'sgb'),
 (2, 'Email Funktion', 'mail_funk', 'Ermöglicht es Lehrern und Schülern gegenseitig Nachrichten zu schreiben', 0, 'sgb'),
 (3, 'ToDo Funktion', 'todo_funk', 'Ermöglicht es Lehrern einzelnen Schülern oder ganzen Klassen Aufgaben zu erteilen', 0, 'sgb'),
-(4, 'Zuordnungs Funktion', 'zuord_funk', 'Ermöglicht es Administratoren einem Lehrer / Lehrerin nur auf bestimmte Klassen Zugriff zu erteilen', 1, 'sgb'),
-(5, 'Abgaben / Rückgaben Funktion', 'abru_funk', 'Ermöglicht es Schülern ihre erledigten Arbeiten abzugeben und eine anschließend Rückgabe der korrigierten Arbeit zu erhalten', 1, 'sgb'),
+(4, 'Zuordnungs Funktion', 'zuord_funk', 'Ermöglicht es Administratoren einem Lehrer / Lehrerin nur auf bestimmte Klassen Zugriff zu erteilen', 0, 'sgb'),
 (6, 'Lernspiel Funktion', 'game_funk', 'Ermöglicht es Lehrern Spiel-Sessions für Lernspiele zu erstellen, um den Schülern spielerisch das Programmieren beizubringen.', 0, 'sgb');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `fido2_credentials`
---
-
-CREATE TABLE `fido2_credentials` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `credential_id` text NOT NULL,
-  `public_key` text NOT NULL,
-  `sign_count` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -333,14 +242,6 @@ CREATE TABLE `game_sessions` (
   `creator` varchar(120) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Daten für Tabelle `game_sessions`
---
-
-INSERT INTO `game_sessions` (`id`, `game_id`, `token`, `session_name`, `requests`, `status`, `created_at`, `creator`) VALUES
-(60, 1, '4bd5502ab6432854ab45c8b1335d55fa', 'CSS Dinner', 6, 1, '2023-04-09 13:06:02', 'Cooper, Sheldon'),
-(61, 7, '85eb923441d484818de4510443ac5aa8', 'Bitburner', 2, 1, '2023-05-24 18:04:10', 'Cooper, Sheldon');
-
 -- --------------------------------------------------------
 
 --
@@ -375,31 +276,6 @@ CREATE TABLE `last_logins` (
 --
 
 INSERT INTO `last_logins` (`id`, `user`, `browser`, `device`, `success`, `login_time`) VALUES
-(12, 751, 'Chrome auf Windows', 'Windows', 0, '2023-05-27 11:50:52'),
-(13, 751, 'Chrome auf Windows', 'Windows', 1, '2023-05-27 11:51:38'),
-(14, 751, 'Chrome auf Windows', 'Windows', 1, '2023-05-27 11:54:21'),
-(15, 751, 'Firefox auf Windows', 'Windows', 1, '2023-05-27 11:56:06'),
-(16, 751, 'Firefox auf Windows', 'Windows', 1, '2023-05-27 12:00:40'),
-(17, 751, 'Firefox auf Windows', 'Windows', 1, '2023-05-27 14:15:12'),
-(18, 751, 'Firefox auf Windows', 'Windows', 1, '2023-05-27 14:15:46'),
-(19, 751, 'Firefox auf Windows', 'Windows', 1, '2023-06-14 06:07:20'),
-(20, 755, 'Firefox auf Windows', 'Windows', 1, '2023-06-14 06:10:31'),
-(21, 753, 'Firefox auf Windows', 'Windows', 0, '2023-07-06 12:36:57'),
-(22, 751, 'Firefox auf Windows', 'Windows', 1, '2023-07-06 12:37:03'),
-(23, 751, 'Firefox auf Windows', 'Windows', 1, '2023-07-06 12:40:42'),
-(24, 751, 'Firefox auf Windows', 'Windows', 1, '2023-07-06 18:07:56'),
-(25, 751, 'Firefox auf Windows', 'Windows', 1, '2023-07-10 11:45:39'),
-(26, 753, 'Firefox auf Windows', 'Windows', 0, '2023-07-12 08:22:20'),
-(27, 753, 'Firefox auf Windows', 'Windows', 0, '2023-07-12 08:22:26'),
-(28, 753, 'Firefox auf Windows', 'Windows', 1, '2023-07-12 08:22:35'),
-(29, 753, 'Firefox auf Windows', 'Windows', 1, '2023-07-12 13:47:32'),
-(30, 753, 'Firefox auf Windows', 'Windows', 1, '2023-07-12 20:21:29'),
-(31, 753, 'Firefox auf Windows', 'Windows', 1, '2023-07-12 21:33:18'),
-(32, 753, 'Firefox auf Windows', 'Windows', 0, '2023-07-13 07:01:10'),
-(33, 753, 'Firefox auf Windows', 'Windows', 1, '2023-07-13 07:01:16'),
-(34, 753, 'Firefox auf Windows', 'Windows', 1, '2023-07-13 15:47:04'),
-(35, 753, 'Firefox auf Windows', 'Windows', 0, '2023-07-14 07:26:29'),
-(36, 753, 'Firefox auf Windows', 'Windows', 1, '2023-07-14 07:26:37'),
 (37, 751, 'Firefox auf Windows', 'Windows', 1, '2023-07-14 07:51:35'),
 (38, 751, 'Firefox auf Windows', 'Windows', 1, '2023-07-14 08:33:04'),
 (39, 751, 'Firefox auf Windows', 'Windows', 1, '2023-07-14 12:22:06'),
@@ -447,7 +323,9 @@ INSERT INTO `last_logins` (`id`, `user`, `browser`, `device`, `success`, `login_
 (81, 753, 'Chrome auf Windows', 'Windows', 1, '2023-11-22 15:39:12'),
 (82, 753, 'Chrome auf Windows', 'Windows', 1, '2023-11-26 20:28:12'),
 (83, 753, 'Chrome auf Windows', 'Windows', 1, '2023-11-27 18:56:14'),
-(84, 751, 'Chrome auf Windows', 'Windows', 1, '2023-11-27 21:11:07');
+(84, 751, 'Chrome auf Windows', 'Windows', 1, '2023-11-27 21:11:07'),
+(85, 753, 'Chrome auf Windows', 'Windows', 1, '2023-11-29 21:03:37'),
+(86, 751, 'Chrome auf Windows', 'Windows', 1, '2023-11-29 21:18:24');
 
 -- --------------------------------------------------------
 
@@ -466,26 +344,8 @@ CREATE TABLE `logs` (
 --
 
 INSERT INTO `logs` (`id`, `text`, `date`) VALUES
-(1, 'Müller, Elias hat das Systemprotokoll geleert.', '2023-11-09 16:24:50'),
-(2, 'Müller, Elias hat die Institution in \"Schiller-Gymnasium Bautzen\" umbennant.', '2023-11-09 16:25:04'),
-(3, 'Müller, Elias hat sich ausgeloggt.', '2023-11-09 16:27:45'),
-(4, 'Müller, Elias hat sich im Benutzerportal angemeldet.', '2023-11-09 16:27:49'),
-(5, 'Jemand hat sich versucht mit dem Benutzernamen \"SCooper\" im Benutzerportal einzuloggen.', '2023-11-09 16:52:11'),
-(6, 'Cooper, Sheldon hat sich im Benutzerportal angemeldet.', '2023-11-09 16:52:16'),
-(7, 'Müller, Elias hat sich im Benutzerportal angemeldet.', '2023-11-11 13:30:00'),
-(8, 'Müller, Elias hat eine neue Klasse mit dem Namen \"Testklasse XY\" erstellt.', '2023-11-11 13:30:30'),
-(9, 'Müller, Elias hat den Benutzer mit dem Namen \"Sheldon Cooper\" bearbeitet.', '2023-11-11 13:30:40'),
-(10, 'Cooper, Sheldon hat sich im Benutzerportal angemeldet.', '2023-11-11 13:30:53'),
-(11, 'Müller, Elias hat sich im Benutzerportal angemeldet.', '2023-11-11 23:57:20'),
-(12, 'Cooper, Sheldon hat sich im Benutzerportal angemeldet.', '2023-11-12 00:00:27'),
-(13, 'Müller, Elias hat sich im Benutzerportal angemeldet.', '2023-11-22 00:01:35'),
-(14, 'Cooper, Sheldon hat sich im Benutzerportal angemeldet.', '2023-11-22 00:25:05'),
-(15, 'Müller, Elias hat sich ausgeloggt.', '2023-11-22 02:32:02'),
-(16, 'Müller, Elias hat sich im Benutzerportal angemeldet.', '2023-11-22 16:39:12'),
-(17, 'Müller, Elias hat sich im Benutzerportal angemeldet.', '2023-11-26 21:28:12'),
-(18, 'Müller, Elias hat sich im Benutzerportal angemeldet.', '2023-11-27 19:56:14'),
-(19, 'Müller, Elias hat den Benutzer Cooper, Sheldon abgemeldet.', '2023-11-27 22:10:51'),
-(20, 'Cooper, Sheldon hat sich im Benutzerportal angemeldet.', '2023-11-27 22:11:07');
+(1, 'Müller, Elias hat das Systemprotokoll geleert.', '2023-11-29 23:25:39'),
+(2, 'Müller, Elias hat sich ausgeloggt.', '2023-11-29 23:25:43');
 
 -- --------------------------------------------------------
 
@@ -543,13 +403,6 @@ CREATE TABLE `projects` (
   `category` tinytext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Daten für Tabelle `projects`
---
-
-INSERT INTO `projects` (`id`, `name`, `description`, `owner`, `shared`, `completed`, `submitted`, `created_at`, `submitted_at`, `return_at`, `return_grade`, `return_note`, `return_from`, `reviewed`, `project_content`, `category`) VALUES
-(76, 'Abgabe Projekt', 'Wundavoll', 751, 0, 0, 1, '2023-11-27 23:13:49', NULL, NULL, NULL, NULL, NULL, 0, '%7B%22identifier%22%3A76%2C%22project_type%22%3A%22python%22%2C%22name%22%3A%22Abgabe%20Projekt%22%2C%22locale%22%3Anull%2C%22components%22%3A%5B%7B%22extension%22%3A%22py%22%2C%22name%22%3A%22main%22%2C%22content%22%3A%22print%28%5C%22Hellou%20du%20da%5C%22%29%22%2C%22default%22%3Atrue%7D%5D%2C%22image_list%22%3A%5B%5D%2C%22to_review%22%3Atrue%7D', 'python');
-
 -- --------------------------------------------------------
 
 --
@@ -569,25 +422,6 @@ CREATE TABLE `settings` (
 
 INSERT INTO `settings` (`id`, `allow_login`, `connect_repo`, `institution_name`) VALUES
 (1, 1, 0, 'Schiller-Gymnasium Bautzen');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `submissions`
---
-
-CREATE TABLE `submissions` (
-  `id` int(11) NOT NULL,
-  `owner` int(5) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `path` varchar(255) NOT NULL,
-  `date` datetime NOT NULL DEFAULT current_timestamp(),
-  `status` int(11) NOT NULL DEFAULT 0,
-  `return_date` datetime DEFAULT NULL,
-  `return_from` varchar(255) DEFAULT NULL,
-  `return_grade` int(11) DEFAULT NULL,
-  `return_comment` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -641,9 +475,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstName`, `secondName`, `avatar`, `username`, `password`, `role`, `class`, `institution`, `status`, `focus_mode`, `user_dir`, `created_at`, `last_logout`, `agb_confirmed`, `agb_confirmed_at`, `in_exam`, `exam_id`, `exam_redirect`, `exam_join_timestamp`) VALUES
-(751, 'Sheldon', 'Cooper', 3, 'SCooper', '$2y$10$PJGy6/xRHVZCrLenic8/vOHCx/3I907J/w3L4PhtTqgIuQRMi7okG', 'Schüler', 'Testklasse XY', 'Schiller-Gymnasium Bautzen', 1, 0, 'files/users/SCooper', '2023-04-08 22:57:30', '2023-11-27 22:10:51', 1, '2023-04-09 00:57:55', 1, 0, 0, '2023-11-21 23:27:00'),
-(753, 'Elias', 'Müller', 3, 'EMueller', '$2y$10$cZMPbY6.KUNIS8X.Vt1mfOPSRyDjJBfK/JRmf0JWo7OyOQJ72qff2', 'Administrator', 'Informatik Rommel 2024', 'Schiller-Gymnasium Bautzen', 1, 0, 'files/users/EMueller', '2023-05-24 17:16:54', '2023-11-22 02:32:02', 1, '2023-05-24 17:18:28', 0, 0, 0, '0000-00-00 00:00:00'),
-(756, 'Anastasia', 'Ishchenko', 9, 'AIshchenko', '$2y$10$Xb//i3pxAP.RzaCPYkRHLup2y43QT8Fru7XrwBxPDiZFXuFUYTM9S', 'Administrator', 'Informatik Rommel 2024', 'Schiller-Gymnasium Bautzen', 0, 0, 'files/users/AIshchenko', '2023-07-06 22:08:16', NULL, NULL, NULL, 0, 0, 0, '0000-00-00 00:00:00');
+(753, 'Elias', 'Müller', 3, 'EMueller', '$2y$10$cZMPbY6.KUNIS8X.Vt1mfOPSRyDjJBfK/JRmf0JWo7OyOQJ72qff2', 'Administrator', 'Lehrer', 'Schiller-Gymnasium Bautzen', 0, 0, 'files/users/EMueller', '2023-05-24 17:16:54', '2023-11-29 23:25:43', 1, '2023-05-24 17:18:28', 0, 0, 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -680,12 +512,6 @@ ALTER TABLE `classes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indizes für die Tabelle `compiler_langs`
---
-ALTER TABLE `compiler_langs`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indizes für die Tabelle `emails`
 --
 ALTER TABLE `emails`
@@ -714,14 +540,6 @@ ALTER TABLE `exam_content`
 --
 ALTER TABLE `features`
   ADD PRIMARY KEY (`id`);
-
---
--- Indizes für die Tabelle `fido2_credentials`
---
-ALTER TABLE `fido2_credentials`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `credential_id` (`credential_id`(255)),
-  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indizes für die Tabelle `games`
@@ -778,12 +596,6 @@ ALTER TABLE `settings`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indizes für die Tabelle `submissions`
---
-ALTER TABLE `submissions`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indizes für die Tabelle `todos`
 --
 ALTER TABLE `todos`
@@ -825,12 +637,6 @@ ALTER TABLE `classes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT für Tabelle `compiler_langs`
---
-ALTER TABLE `compiler_langs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
-
---
 -- AUTO_INCREMENT für Tabelle `emails`
 --
 ALTER TABLE `emails`
@@ -861,12 +667,6 @@ ALTER TABLE `features`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT für Tabelle `fido2_credentials`
---
-ALTER TABLE `fido2_credentials`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT für Tabelle `games`
 --
 ALTER TABLE `games`
@@ -876,7 +676,7 @@ ALTER TABLE `games`
 -- AUTO_INCREMENT für Tabelle `game_sessions`
 --
 ALTER TABLE `game_sessions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT für Tabelle `invitations`
@@ -888,13 +688,13 @@ ALTER TABLE `invitations`
 -- AUTO_INCREMENT für Tabelle `last_logins`
 --
 ALTER TABLE `last_logins`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
 
 --
 -- AUTO_INCREMENT für Tabelle `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT für Tabelle `messages`
@@ -912,19 +712,13 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT für Tabelle `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT für Tabelle `settings`
 --
 ALTER TABLE `settings`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT für Tabelle `submissions`
---
-ALTER TABLE `submissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT für Tabelle `todos`
@@ -947,12 +741,6 @@ ALTER TABLE `user_tokens`
 --
 -- Constraints der exportierten Tabellen
 --
-
---
--- Constraints der Tabelle `fido2_credentials`
---
-ALTER TABLE `fido2_credentials`
-  ADD CONSTRAINT `fido2_credentials_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints der Tabelle `user_tokens`

@@ -66,10 +66,8 @@ if(isset($_POST["createClass"]))
 
           // Insert in DB and create Folder
           if($db->createClass($name, $description, $class_dir, $log_user)) {
-            if (!file_exists($class_dir)) {
-                if(mkdir($class_dir, 0777, true)) {
                     header("Location: classes");
-                }
+            }
                 else {
                     $db->delete_class_emergency($name, $description, $class_dir);
                     echo'
@@ -82,17 +80,7 @@ if(isset($_POST["createClass"]))
                     sleep(3);
                     header("Location: classes");
                 }
-                }
-            }
-            else {
-                echo'
-        <div class="alert alert-danger" role="alert">
-                                            <h4 class="alert-heading">Datenbankfehler</h4>
-                                            <div class="alert-body">
-                                            Klasse konnte nicht erstellt werden. Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com
-                                            </div>
-                                        </div>';
-            }
+                
     };
 
     // Set Focus Mode offline
@@ -145,74 +133,9 @@ if(isset($_POST["createClass"]))
 
         $class_dir_for_delete = $db->getClassDir($id);
         if($db->deleteClass($id)) {
-
+            header("Location: classes"); 
               
-            function rec_rmdir ($unlink_path) {
-              if (!is_dir ($unlink_path)) {
-                  return -1;
-              }
-              $dir = @opendir ($unlink_path);
-              if (!$dir) {
-                  return -2;
-              }
-              while ($entry = @readdir($dir)) {
-                  if ($entry == '.' || $entry == '..') continue;
-                  if (is_dir ($unlink_path.'/'.$entry)) {
-                      $res = rec_rmdir ($unlink_path.'/'.$entry);
-                      if ($res == -1) {
-                          @closedir ($dir);
-                          return -2;
-                      } else if ($res == -2) {
-                          @closedir ($dir);
-                          return -2;
-                      } else if ($res == -3) {
-                          @closedir ($dir); 
-                          return -3; 
-                      } else if ($res != 0) {
-                          @closedir ($dir);
-                          return -2;
-                      }
-                  } else if (is_file ($unlink_path.'/'.$entry) || is_link ($unlink_path.'/'.$entry)) {
-                      $res = @unlink ($unlink_path.'/'.$entry);
-                      if (!$res) {
-                          @closedir ($dir);
-                          return -2;
-                      }
-                  } else {
-                      @closedir ($dir);
-                      return -3;
-                  }
-              }
-              @closedir ($dir);
-              $res = @rmdir ($unlink_path);
-              if (!$res) {
-                  return -2;
-              }
-              return 0;
-          }
-          
-              // -- Delete command 
-              $unlink_path = $class_dir_for_delete;
-              $res = rec_rmdir ($unlink_path);
-              switch ($res) {
-                case 0:
-                  header("classes");
-                  break;
-                case -1:
-                  echo('Das war kein Verzeichnis. Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com');
-                  break;
-                case -2:
-                  
-                  echo('Fehler beim Löschen des Verzeichnisses. Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com');
-                  break;
-                case -3:
-                 
-                  echo('Dieser Dateityp wird nicht unterstützt. Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com');
-                  break;
-                default:
-                  echo('Unbekannter Fehler. Bitte versuchen Sie es nocheinmal oder kontaktieren Sie support@ide4school.com');
-                  break;
-                }
+           
                           
                     }
           
@@ -229,9 +152,20 @@ if(isset($_POST["createClass"]))
                           header("Location: classes");
                   }
     
-                header("Location: classes"); 
+                
         
       }
+
+        // Rename Class
+        if(isset($_POST['renameClass'])) {
+            $db->renameClass($_POST['class_rename_id_input'], $_POST['class_rename_name_input']);
+            header("Location: classes");
+        }
+
+        if(isset($_POST['editClassDescription'])) {
+            $db->editClassDescription($_POST['class_desc_edit_id_input'], $_POST['class_desc_edit_name_input']);
+            header("Location: classes");
+        }
 
 ?>
 
@@ -315,6 +249,38 @@ if(isset($_POST["createClass"]))
         document.getElementById("class_delete_id_input").value = id;
         document.getElementById("class_delete_form").submit();
     }
+
+    function renameClass(id){
+        if(confirm("Klasse umbenennen?")){
+            var new_name = prompt("Neuer Name:");
+            if(new_name != null){
+                if(new_name != ""){
+                    document.getElementById("class_rename_id_input").value = id;
+                    document.getElementById("class_rename_name_input").value = new_name;
+                    document.getElementById("class_rename_form").submit();
+                }
+                else {
+                    alert("Bitte geben Sie einen Namen ein!");
+                }
+            }
+        }
+    }
+
+    function editClassDescription(id){
+        if(confirm("Klassenbeschreibung ändern?")){
+            var new_desc = prompt("Neue Beschreibung:");
+            if(new_desc != null){
+                if(new_desc != ""){
+                    document.getElementById("class_desc_edit_id_input").value = id;
+                    document.getElementById("class_desc_edit_name_input").value = new_desc;
+                    document.getElementById("class_desc_edit_form").submit();
+                }
+                else {
+                    alert("Bitte geben Sie einen Namen ein!");
+                }
+            }
+        }
+    }
 </script>
 
 <!-- Class delete hidden form -->
@@ -323,11 +289,24 @@ if(isset($_POST["createClass"]))
             <input name="delete" type="text" hidden id="delete">
         </form>
 
+        <!-- Class rename hidden form -->
+        <form action="classes" method="post" id="class_rename_form">
+            <input name="class_rename_id_input" type="hidden" hidden id="class_rename_id_input">
+            <input name="class_rename_name_input" type="hidden" hidden id="class_rename_name_input">
+            <input name="renameClass" type="hidden" hidden id="renameClass">
+        </form>
+
+        <!-- Class description edit hidden form -->
+        <form action="classes" method="post" id="class_desc_edit_form">
+            <input name="class_desc_edit_id_input" type="hidden" hidden id="class_desc_edit_id_input">
+            <input name="class_desc_edit_name_input" type="hidden" hidden id="class_desc_edit_name_input">
+            <input name="editClassDescription" type="hidden" hidden id="editClassDescription">
+
         <?php include('inc/components/header.php'); ?>
 
 
-    <!-- BEGIN: Main Menu-->
-    <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
+          <!-- BEGIN: Main Menu-->
+          <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="navbar-header">
             <ul class="nav navbar-nav flex-row">
                 <li class="nav-item me-auto"><a class="navbar-brand" href="dashboard"><span class="brand-logo">
@@ -390,22 +369,12 @@ if(isset($_POST["createClass"]))
                 </li>
                 <li class="nav-item"><a data-bs-toggle="modal" data-bs-target="#createEnviromentModal" class="d-flex align-items-center"><i data-feather="edit-3"></i><span class="menu-title text-truncate" data-i18n="Development Enviroment">Programmieren</span></a>
                 </li>
-                <li class="nav-item"><a class="d-flex align-items-center" href="struktogrammeditor"><i data-feather="layout"></i><span class="menu-title text-truncate" data-i18n="Struktogrammeditor">Struktogrammeditor</span></a>
+                <li class="nav-item"><a class="d-flex align-items-center" href="projects"><i data-feather="layers"></i><span class="menu-title text-truncate" data-i18n="Projects">Projekte</span></a>
+                </li>
+                <li class="nav-item"><a class="d-flex align-items-center" target="_blank" href="struktogrammeditor"><i data-feather="layout"></i><span class="menu-title text-truncate" data-i18n="Struktogrammeditor">Struktogrammeditor</span></a>
                     </li>
                 <?php
-                if($db->isGameFunktionEnabled()) {
-                    ?>
-                    <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="play-circle"></i><span class="menu-title text-truncate" data-i18n="Lernspiele">Lernspiele</span></a>
-                    <ul class="menu-content ">
-                        <li><a class="d-flex align-items-center" href="games"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Spieleübersicht">Spieleübersicht</span></a>
-                        </li>
-                        <li><a class="d-flex align-items-center" href="game_manager"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Session Manager">Session Manager</span></a>
-                        </li>
-                    </ul>
-                </li>
                 
-<?php  
-                }
                 if($db->isEmailFunktionEnabled()) {
                     echo '<li class=" nav-item"><a class="d-flex align-items-center" href="email"><i data-feather="mail"></i><span class="menu-title text-truncate" data-i18n="Direktnachrichten">Direktnachrichten</span></a>
                     </li>';
@@ -421,20 +390,32 @@ if(isset($_POST["createClass"]))
                     </li>';
                 }
 
-                if($db->isSubmissionFunktionEnabled()) {
-                    echo '<li class=" nav-item"><a class="d-flex align-items-center" href="submissions"><i data-feather="inbox"></i><span class="menu-title text-truncate" data-i18n="Submissions">Abgaben</span></a>
-                    </li>';
-                }
-                ?>
+                //if($db->isSubmissionFunktionEnabled()) {
+                 //   echo '<li class=" nav-item"><a class="d-flex align-items-center" href="submissions"><i data-feather="inbox"></i><span class="menu-title text-truncate" data-i18n="Submissions">Abgaben</span></a>
+                  //  </li>';
+                //}
                 
-                
-                
-                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="hard-drive"></i><span class="menu-title text-truncate" data-i18n="Files">Dateien</span></a>
+                if($db->isGameFunktionEnabled()) {
+                    ?>
+                    <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="play-circle"></i><span class="menu-title text-truncate" data-i18n="Lernspiele">Lernspiele</span></a>
                     <ul class="menu-content ">
-                        <li><a class="d-flex align-items-center" <?php if($getCurrentUserData['role'] == "Schüler") { echo ' href="disk&drive=my"'; } else { echo 'href="disk&drive=ad-users"'; } ?>><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="My folder"><?php if($getCurrentUserData['role'] == "Schüler") { echo 'Mein Ordner'; } else { echo 'Benutzerordner'; }?></span></a>
+                        <li><a class="d-flex align-items-center" href="games"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Spieleübersicht">Spieleübersicht</span></a>
                         </li>
-                        <li><a class="d-flex align-items-center" <?php if($getCurrentUserData['role'] == "Schüler") { echo ' href="disk&drive=class"'; } else { echo 'href="disk&drive=ad-classes"'; } ?>><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Class folder">Klassenordner</span></a>
+                        <li><a class="d-flex align-items-center" href="game_manager"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Session Manager">Session Manager</span></a>
                         </li>
+                    </ul>
+                </li>
+                
+<?php  
+                }
+                
+?>
+                <!-- <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='check-circle'></i></i><span class="menu-title text-truncate" data-i18n="Exam">Prüfungen</span></a>
+                    <ul class="menu-content ">
+                        <li><a class="d-flex align-items-center" <?php //if($getCurrentUserData['role'] == "Schüler") { echo ' href="exams"'; } else { echo 'href="exams"'; } ?>><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Exam timeline"><?php if($getCurrentUserData['role'] == "Schüler") { echo 'Geschriebene Prüfungen'; } else { echo 'Prüfungsübersicht'; }?></span></a>
+                        </li>
+                        <?php //if($getCurrentUserData['role'] != "Schüler") { echo '<li><a class="d-flex align-items-center" href="exam&state=createNewExam" ><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Class folder">Klassenordner</span></a></li>'; }
+                        ?>
                         <?php
                         if($getCurrentUserData['role'] != "Schüler") {
                             ?>
@@ -451,12 +432,12 @@ if(isset($_POST["createClass"]))
                         ?>
                     </ul>
                 </li>
-
+                !-->
                 <?php
                         if($db->noStudent()) {
                            ?>
                 <li class=" navigation-header"><span data-i18n="Management">Verwaltung</span><i data-feather="more-horizontal"></i>
-
+                
                 <li class=" nav-item"><a class="d-flex align-items-center" href="users"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="Users">Benutzer</span></a>
                 </li>
                 <li class=" nav-item active"><a class="d-flex align-items-center" href="classes"><i data-feather="users"></i><span class="menu-title text-truncate" data-i18n="Classes">Klassen</span></a>
@@ -603,6 +584,14 @@ if(isset($_POST["createClass"]))
                     }
 
             echo '
+            <a onclick=renameClass(' . $class['id'] . ') class="dropdown-item delete-record">
+            <i data-feather="edit"></i>
+                Klasse umbenennen
+            </a>
+            <a onclick=editClassDescription(' . $class['id'] . ') class="dropdown-item delete-record">
+            <i data-feather="edit"></i>
+                Klassenbeschreibung ändern
+            </a>
             <a onclick=deleteClass(' . $class['id'] . ') class="dropdown-item delete-record">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2">
                     <polyline points="3 6 5 6 21 6"></polyline>

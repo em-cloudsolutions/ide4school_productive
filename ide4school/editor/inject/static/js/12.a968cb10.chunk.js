@@ -1,2 +1,0 @@
-(this["webpackJsonp@raspberrypifoundation/editor-ui"]=this["webpackJsonp@raspberrypifoundation/editor-ui"]||[]).push([[12],{719:function(e,t,c){"use strict";c.r(t);var n=c(1),a=c(17),i=c(102),o=c(14);t.default=function(){var e=Object(a.t)().locale,t=Object(i.b)().i18n,c=Object(a.o)(),r=Object(a.q)();return Object(n.useEffect)((function(){if(!t.options.locales.includes(e)){var n=new RegExp("^/".concat(e));r(c.pathname.replace(n,"/".concat(t.language)))}}),[e,t,c,r]),Object(o.jsx)(a.b,{})}}}]);
-//# sourceMappingURL=12.a968cb10.chunk.js.map

@@ -830,7 +830,7 @@ class DB {
     }    
     
 
-    function updateUser($firstName, $secondName, $class, $role, $username, $password, $log_user) {
+    function updateUser($firstName, $secondName, $class, $role, $username, $password, $log_user, $user_id) {
         $stmt = self::$_db->prepare("UPDATE users SET firstName=:firstName, secondName=:secondName, username=:username, password=:password, role=:role, class=:class, institution=:institution WHERE id=:id");
         $stmt->bindParam(":firstName", $firstName);
         $stmt->bindParam(":secondName", $secondName);
@@ -839,10 +839,7 @@ class DB {
         $stmt->bindParam(":role", $role);
         $stmt->bindParam(":class", $class);
         $stmt->bindParam(":id", $user_id);
-
-
         $institution = self::getCurrentInstitution();
-
         $stmt->bindParam(":institution", $institution);
         if($stmt->execute()) {
             $log = self::$_db->prepare("INSERT INTO logs (text) VALUES(:log_entry)");
@@ -2451,8 +2448,10 @@ class DB {
     }
 
     function publishProject($project_id) {
-        $stmt = self::$_db->prepare("UPDATE projects SET submitted=1 WHERE id=:project_id");
+        $stmt = self::$_db->prepare("UPDATE projects SET submitted=1, submitted_at=:submitted_at WHERE id=:project_id");
         $stmt->bindParam(":project_id", $project_id);
+        $submitted_at = date("Y-m-d H:i:s");
+        $stmt->bindParam(":submitted_at", $submitted_at);
         if($stmt->execute()) {
             //Lese project_content aus, dekodiere es und ändere den wert von to_review auf true, dann encodiere es wieder und speichere es in der Datenbank
             $stmt = self::$_db->prepare("SELECT * FROM projects WHERE id=:project_id");
@@ -2625,7 +2624,52 @@ class DB {
     }
 
 
+    function getAllUnReviewedProjectsOfMyAssignedClasses4Dashboard() {
+        //Lese aus assignments alle Klassen aus, die dem Lehrer (der aktuellen nutzer id) zugeordnet sind
+        //dann lese aus users alle Schüler aus, die in den Klassen sind
+        //dann lese aus projects alle Projekte aus, die von den Schülern erstellt wurden
+        //dann filtere die Projekte nach reviewed=0 und submitted=1
+        //gebe die Anzahl der Projekte zurück
+        $stmt = self::$_db->prepare("SELECT * FROM assignments WHERE teacher=:teacher");
+        $stmt->bindParam(":teacher", $_SESSION['user_id']);
+        $stmt->execute();
+        if($result = $stmt->fetchAll()) {
+            $result_array = array();
+            foreach($result as $assignment) {
+                $class = $assignment['class'];
+                $stmt = self::$_db->prepare("SELECT * FROM users WHERE class=:class");
+                $stmt->bindParam(":class", $class);
+                $stmt->execute();
+                if($result = $stmt->fetchAll()) {
+                    foreach($result as $student) {
+                        $student_id = $student['id'];
+                        $stmt = self::$_db->prepare("SELECT * FROM projects WHERE owner=:owner AND reviewed=0 AND submitted=1");
+                        $stmt->bindParam(":owner", $student_id);
+                        $stmt->execute();
+                        if($result = $stmt->fetchAll()) {
+                            foreach($result as $project) {
+                                array_push($result_array, $project);
+                            }
+                        }
+                    }
+                }
+            }
+            return $result_array;
+        } else {
+            return NULL;
+        }
+    }
 
+    function getSubmittedProjectsFromUser($user_id) {
+        $stmt = self::$_db->prepare("SELECT * FROM projects WHERE owner=:owner AND submitted=1");
+        $stmt->bindParam(":owner", $user_id);
+        $stmt->execute();
+        if($result = $stmt->fetchAll()) {
+            return $result;
+        } else {
+            return NULL;
+        }
+    }
 
 
     // EXAM
@@ -3022,10 +3066,27 @@ class DB {
     }
 
 
+    function renameClass($id, $new_name) {
+        $stmt = self::$_db->prepare("UPDATE classes SET name=:new_name WHERE id=:id");
+        $stmt->bindParam(":new_name", $new_name);
+        $stmt->bindParam(":id", $id);
+        if($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-
-
-
+    function editClassDescription($id, $new_description) {
+        $stmt = self::$_db->prepare("UPDATE classes SET description=:new_description WHERE id=:id");
+        $stmt->bindParam(":new_description", $new_description);
+        $stmt->bindParam(":id", $id);
+        if($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 
