@@ -2448,7 +2448,7 @@ class DB {
     }
 
     function publishProject($project_id) {
-        $stmt = self::$_db->prepare("UPDATE projects SET submitted=1, submitted_at=:submitted_at WHERE id=:project_id");
+        $stmt = self::$_db->prepare("UPDATE projects SET submitted=1, shared=0, submitted_at=:submitted_at WHERE id=:project_id");
         $stmt->bindParam(":project_id", $project_id);
         $submitted_at = date("Y-m-d H:i:s");
         $stmt->bindParam(":submitted_at", $submitted_at);

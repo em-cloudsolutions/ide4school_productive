@@ -36,20 +36,22 @@ else {
 
 $project_data = $db->getProjectData($project_id);
 
+//Nehme den Wert aus project_content und decodiere ihn
+//dekodiere den json_string
+//wenn owner != user_id setze den wert von in_review (aus dem json string) auf true
+
+$decoded_project_content = json_decode(urldecode($project_data['project_content']), true);
+if($project_data['owner'] != $_SESSION['user_id']) {
+    $decoded_project_content['in_review'] = true;
+    $project_data['project_content'] = urlencode(json_encode($decoded_project_content));
+}
+
 if($project_data == NULL) {
     header("Location: projects");
 }
 
-if($project_data['owner'] != $_SESSION['user_id'] && $project_data['shared'] == "0" && $project_data['submitted'] == "0") {
+if($getCurrentUserData['role'] == "Schüler" && $project_data['shared'] != "1" && $project_data['owner'] != $_SESSION['user_id']) {
     header("Location: not_authorized");
-}
-
-
-if($project_data['owner'] != $_SESSION['user_id'] && $project_data['shared'] == "1"  || $project_data['owner'] != $_SESSION['user_id'] && $project_data['submitted'] == "1") {
-    $_SESSION['disk_state'] = "non_writable";
-}
-if($project_data['owner'] == $_SESSION['user_id']) {
-    $_SESSION['disk_state'] = "writable";
 }
 
 if(isset($_POST['markascompleted'])) {

@@ -171,7 +171,7 @@ function readyCheck() {
                                 <div class="mb-1">
                                         <div class="form-check">
                                             <input class="form-check-input" id="agb_confirmed" type="checkbox" name="agb_confirmed" onclick="readyCheck()"/>
-                                            <label class="form-check-label" for="agb_confirmed"> Hiermit bestätige ich, dass ich die <a href="https://ide4school.com/terms-of-use" target="_blank">Nutzungsbedingungen</a> und <a href="https://ide4school.com/privacy" target="_blank">Datenschutzrichtlinien</a> von ide4school vollständig gelesen habe und diese akzeptiere.</label>
+                                            <label class="form-check-label" for="agb_confirmed"> Hiermit bestätige ich, dass meine Daten schulintern durch ide4school verarbeitet werden dürfen.</label>
                                         </div>
                                     </div><br />
                                     <p>Als nächstes musst du dein Passwort ändern, um sicherzustellen, dass sich niemand Fremdes mit deinem Startpasswort in deinem Account einloggen kann. </p> 

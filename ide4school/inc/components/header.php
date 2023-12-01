@@ -33,7 +33,7 @@ $newNotifications = $db->getNewUserNotifications();
                                         echo '<li class="nav-item d-none d-lg-block"><a class="nav-link" href="todo" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Todo"><i class="ficon" data-feather="check-square"></i></a></li>';
                                     }
                                     ?>
-                                                        <li class="nav-item d-none d-lg-block"><a class="nav-link" href="disk" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Dateien"><i class="ficon" data-feather="hard-drive"></i></a></li>
+                                                        <li class="nav-item d-none d-lg-block"><a class="nav-link" href="projects" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Projekte"><i class="ficon" data-feather="layers"></i></a></li>
                     </ul>
             </div>
             <ul class="nav navbar-nav align-items-center ms-auto">
