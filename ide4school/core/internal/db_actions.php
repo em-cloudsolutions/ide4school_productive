@@ -667,7 +667,7 @@ class DB {
                 $assign = self::$_db->prepare("INSERT INTO ". $_SESSION['assignments_db'] . " (teacher, class, access) VALUES(:teacher, :class, :access)");
                 $user_id = self::getUserIDViaUsername($username);
                 $assign->bindParam(":teacher", $user_id);
-                $assign->bindParam(":class", $available_class[' ']);
+                $assign->bindParam(":class", $available_class['name']);
                 $pre_access = '1';
                 $assign->bindParam(":access", $pre_access);
                 $assign->execute();

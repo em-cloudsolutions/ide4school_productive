@@ -472,7 +472,7 @@ foreach($emails as $email) {
             <div class="modal-content p-0">
                 <form id="form-modal-todo" class="todo-modal needs-validation" action="email" method="POST">
                     <div class="modal-header align-items-center mb-1">
-                        <h5 class="modal-title">Email ansehen</h5>
+                        <h5 class="modal-title">Direktnachricht ansehen</h5>
                         <div class="todo-item-action d-flex align-items-center justify-content-between ms-auto">
                             <i data-feather="x" class="cursor-pointer" data-bs-dismiss="modal" stroke-width="3"></i>
                         </div>
@@ -511,7 +511,7 @@ foreach($emails as $email) {
                       if($email['opened'] == "0" && $email['receiver'] == $_SESSION['user_id']) {
                             echo '<button type="submit" name="openEmail" class="btn btn-outline-secondary add-todo-item">Als gelesen markieren</button> ';
                       } 
-                        echo ' <button style="text-align: right;" type="submit" name="deleteEmail" class="btn btn-outline-secondary add-todo-item">Email löschen</button>';
+                        echo ' <button style="text-align: right;" type="submit" name="deleteEmail" class="btn btn-outline-secondary add-todo-item">Direktnachricht löschen</button>';
                     
                         echo'
                         </div>
@@ -529,7 +529,7 @@ foreach($emails as $email) {
                             <div class="modal-dialog modal-lg modal-dialog-scrollable">
                                 <div class="modal-content p-0">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Email verfassen</h5>
+                                        <h5 class="modal-title">Direktnachricht verfassen</h5>
                                         <div class="modal-actions">
                                             <a href="#" class="text-body me-75 compose-maximize"><i data-feather="maximize-2"></i></a>
                                             <a class="text-body" href="#" data-bs-dismiss="modal" aria-label="Close"><i data-feather="x"></i></a>

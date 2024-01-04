@@ -114,7 +114,7 @@ if(isset($_POST["importUsers"]))
         }
  
 
-        $uploadFilePath = 'files/administration/importlists/'.basename($_FILES['list-file']['name']);
+        $uploadFilePath = 'temp/administration/importlists/'.basename($_FILES['list-file']['name']);
         move_uploaded_file($_FILES['list-file']['tmp_name'], $uploadFilePath);
 
 
@@ -197,6 +197,7 @@ if(isset($_POST["importUsers"]))
 
                 if(isset($_POST['list-class'])){
                     $class = isset($Row[2]) ? $Row[2] : '';
+                    $class_in_sheet = true;
                 }
                 else {
                     $class = $_POST['class'];
@@ -288,14 +289,19 @@ if(isset($_POST["importUsers"]))
           $spec_chars = array('Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y' );
           $username = strtr( $username, $spec_chars);   
            
-          $html .= '
-                      <tr><td>' . $secondName . '</td><td>' . $firstName . '</td><td>' . $class . '</td><td>' . $role . '</td><td>' . $username . '</td><td>' . $password . '</td></tr>
-        ';
+          $html .= '<tr><td>' . $secondName . '</td><td>' . $firstName . '</td><td>' . $class . '</td><td>' . $role . '</td><td>' . $username . '</td><td>' . $password . '</td></tr>';
            
           $unencrypted_password = $password;
           $password = password_hash($unencrypted_password, PASSWORD_DEFAULT);
 
-          
+          if($class_in_sheet == true) {
+            // Create new class
+            $description = "Klasse " . $class;
+            $class_dir = "files/classes/" . $class;
+            $log_user = $db->getLogUser();
+            $db->createClass($class, $description, $class_dir, $log_user);
+
+          }
 
           // Insert in DB and create Folder
           if($db->createUser($firstName, $secondName, $class, $role, $username, $password, $log_user)) {
@@ -334,7 +340,7 @@ if(isset($_POST["importUsers"]))
            
           // Dokumenteninformationen
           $pdf->SetCreator(PDF_CREATOR);
-          $pdfAuthor = "em CLOUDsolutions";
+          $pdfAuthor = "ide4school";
           $pdf->SetAuthor($pdfAuthor);
           $pdf->SetTitle("ide4school Mitgliederimport");
           $pdf->SetSubject("ide4school Mitgliederimport");
@@ -366,9 +372,8 @@ if(isset($_POST["importUsers"]))
            
           // Fügt den HTML Code in das PDF Dokument ein
           $pdf->writeHTML($html, true, false, true, false, '');
-           
+ 
           //Ausgabe der PDF
-           
           //Variante 1: PDF direkt an den Benutzer senden:
           $pdf->Output($pdfName, 'I');
            
