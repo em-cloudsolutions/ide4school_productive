@@ -227,7 +227,7 @@ if(isset($_POST["createClass"]))
     }
 </script>
 <!-- Session class update hidden form -->
-        <form action="classlist" method="POST" id="updateSessionClassForm">
+        <form action="classes" method="POST" id="updateSessionClassForm">
             <input name="class_name" type="text" hidden id="class_name">
             <input name="updateSessionClass" type="text" hidden id="updateSessionClass">
         </form>
