@@ -1124,7 +1124,7 @@ if(isset($_POST["remoteLogoutClass"]))
                                                 <h5>Datei Informationen</h5>
                                             </div>
                                         <div class="mb-1">
-                                        <p>Die Datei muss im XLSX Excel-Format vorliegen! Nur Dateien mit dieser Dateiendung werden ordnungsgemäß importiert!</p>
+                                        <p>Die Datei muss im XLSX Excel-Format vorliegen! Nur Dateien mit dieser Dateiendung werden ordnungsgemäß importiert!<br />Bitte beachten: Die Arbeitsmappe darf nur ein Tabellenblatt enthalten - überflüssige sind zu entfernen!</p>
                                         <h6>Die Spalten müssen folgende Anordnung haben:</h6>
                                         <p>
                                             1. Spalte: Vorname<br />
