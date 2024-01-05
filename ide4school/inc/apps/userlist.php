@@ -95,6 +95,7 @@ if(isset($_POST["createUser"]))
 
 if(isset($_POST["importUsers"]))
 {
+  $class_in_sheet = false;
   $log_user = $db->getLogUser();
   $extension = strtolower(pathinfo($_FILES['list-file']['name'], PATHINFO_EXTENSION));
 
