@@ -121,17 +121,7 @@ if(isset($_POST["importUsers"]))
 
         $Reader = new SpreadsheetReader($uploadFilePath);
 
-
-        $totalSheet = count($Reader->sheets());
-
-        /* For Loop for all sheets */
-        for($i=0;$i<$totalSheet;$i++){
-
-
-        $Reader->ChangeSheet($i);
-            
-        if (!function_exists('randomPassword')){
-            function randomPassword() {
+        function randomPassword() {
                 $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
                 $pass = array(); //remember to declare $pass as an array
                 $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
@@ -140,8 +130,16 @@ if(isset($_POST["importUsers"]))
                     $pass[] = $alphabet[$n];
                 }
                 return implode($pass); //turn the array into a string
-            }
         }
+
+
+        $totalSheet = count($Reader->sheets());
+
+        /* For Loop for all sheets */
+        for($i=0;$i<$totalSheet;$i++){
+
+
+        $Reader->ChangeSheet($i);
 
         $request_header = '
         <img src="app-assets/images/logo/logo.png">
