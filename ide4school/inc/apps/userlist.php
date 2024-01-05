@@ -1124,7 +1124,7 @@ if(isset($_POST["remoteLogoutClass"]))
                                                 <h5>Datei Informationen</h5>
                                             </div>
                                         <div class="mb-1">
-                                        <p>Die Datei muss im XLSX Excel-Format vorliegen! Nur Dateien mit dieser Dateiendung werden ordnungsgemäß importiert!<br /><br />Bitte beachten: Die Arbeitsmappe darf nur ein Tabellenblatt enthalten - überflüssige sind zu entfernen!</p>
+                                        <p>Die Datei muss im XLSX Excel-Format vorliegen! Nur Dateien mit dieser Dateiendung werden ordnungsgemäß importiert!<br /><br />Bitte beachten: Die Arbeitsmappe darf nur ein Tabellenblatt enthalten - überflüssige Tabellenblätter sind zu entfernen!</p>
                                         <h6>Die Spalten müssen folgende Anordnung haben:</h6>
                                         <p>
                                             1. Spalte: Vorname<br />
@@ -1134,7 +1134,7 @@ if(isset($_POST["remoteLogoutClass"]))
                                             5. Spalte: Benutzername<br />
                                             6. Spalte: ggf. Passwort<br />
                                         </p>
-                                        <p style="color: red;">Die Einträge in der Liste müssen sofort mit den Benutzerdaten starten! Überschriften wie "Name", "Klasse" oder "Passwort" werden ansonsten als neue Benutzer angelegt! <br /><br /> Beim abwählen bestimmter Spalten rutschen die folgenden automatisch um die Anzahl der abgewählten Spalten vor!</p>
+                                        <p style="color: red;">Die Einträge in der Liste müssen sofort mit den Benutzerdaten starten! Überschriften wie "Name", "Klasse" oder "Passwort" werden ansonsten als neue Benutzer angelegt! <br /><br /> Beim Abwählen bestimmter Spalten rutschen die folgenden automatisch um die Anzahl der abgewählten Spalten vor!</p>
                                         
 
                                         
